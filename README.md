@@ -3,7 +3,7 @@
 **The first public release contains one workflow only: Apex Generator.** This package is focused on Krea 2 Turbo image generation, the LoRA stack, Civitai-compatible recipe metadata, and PNG saving.
 
 - **Release:** 0.1.0
-- **Publisher:** Apex Lightspeed (set the actual Comfy Registry Publisher ID in `pyproject.toml` before publishing)
+- **Publisher:** ApexLightspeed
 - **Workflow included:** `Apex Generator v2.json` — no Refine, Context Repair, Upscale, or Detailer workflow tabs are included.
 - **Apex nodes registered:** Apex Model Optimizer, Apex Recipe, and Apex Generate.
 - **Python dependencies:** none added by this package; ComfyUI provides the runtime libraries.
