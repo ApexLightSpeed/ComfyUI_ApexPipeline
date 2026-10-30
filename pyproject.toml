@@ -19,8 +19,7 @@ Repository = "https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline"
 Issues = "https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline/issues"
 
 [tool.comfy]
-PublisherId = "REPLACE_WITH_COMFY_REGISTRY_PUBLISHER_ID"
+PublisherId = "apexlightspeed"
 DisplayName = "Apex Pipeline"
-Icon = ""
 requires-comfyui = ">=0.26.0"
 includes = ["web", "workflows"]
