@@ -145,7 +145,7 @@ def _native_input_types():
             "clip_type": (clip_types, {"default": "krea2", "tooltip": "The native fallback always uses krea2. The selection is retained for compatibility."}),
         },
         "optional": {
-            "spectrum": (["", "auto", "on", "off"], {"default": "", "tooltip": "Requires LC123; ignored by the native fallback."}),
+            "spectrum": (["", "auto", "on", "off"], {"default": "off", "tooltip": "Requires LC123; disabled by default for compatibility."}),
             "veda": (["", "auto", "on", "off"], {"default": "", "tooltip": "Requires LC123; ignored by the native fallback."}),
         },
     }
@@ -209,7 +209,20 @@ class ApexModelOptimizer:
         if lc_cls is not None and engine is not None:
             try:
                 with _safe_lc_scan(engine):
-                    return lc_cls.INPUT_TYPES()
+                    schema = lc_cls.INPUT_TYPES()
+                # Spectrum is optional in LC123's optimizer. It can cause
+                # compatibility/runtime failures on some Krea 2 setups, so
+                # Apex defaults it to off while preserving the user control.
+                schema = dict(schema)
+                for section in ("required", "optional"):
+                    if section in schema:
+                        schema[section] = dict(schema[section])
+                        entry = schema[section].get("spectrum")
+                        if isinstance(entry, tuple) and len(entry) >= 2:
+                            options = dict(entry[1] or {})
+                            options["default"] = "off"
+                            schema[section]["spectrum"] = (entry[0], options, *entry[2:])
+                return schema
             except MemoryError:
                 _LOG.exception(
                     "[Apex Model Optimizer] LC123 schema generation ran out of memory; "

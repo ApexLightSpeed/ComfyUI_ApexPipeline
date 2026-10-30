@@ -32,7 +32,7 @@ def load_module(monkeypatch, *, lc_enabled=True):
             @classmethod
             def INPUT_TYPES(cls):
                 local = [name for _, name in engine.local_files("model")]
-                return {"required": {"base_model": (["Krea 2 (Turbo)"], {}), "goal": (["Optimal"], {}), "model_file": (local, {})}}
+                return {"required": {"base_model": (["Krea 2 (Turbo)"], {}), "goal": (["Optimal"], {}), "model_file": (local, {})}, "optional": {"spectrum": (["auto", "on", "off"], {"default": "auto"})}}
             @classmethod
             def IS_CHANGED(cls, **kwargs):
                 return "lc-change-token"
@@ -54,6 +54,7 @@ def test_lc_schema_uses_safe_comfy_lists_and_restores_engine(monkeypatch):
     original = engine._list
     schema = module.ApexModelOptimizer.INPUT_TYPES()
     assert schema["required"]["model_file"][0] == ["Lustify.safetensors", "subfolder/Other.safetensors", "model.gguf"]
+    assert schema["optional"]["spectrum"][1]["default"] == "off"
     assert engine._list is original
 
 
@@ -85,6 +86,7 @@ def test_native_fallback_schema_and_loader(monkeypatch):
     fake_nodes.NODE_CLASS_MAPPINGS.update({"UNETLoader": UNET, "CLIPLoader": CLIP, "VAELoader": VAE})
     schema = module.ApexModelOptimizer.INPUT_TYPES()
     assert "model_file" in schema["required"]
+    assert schema["optional"]["spectrum"][1]["default"] == "off"
     out = module.ApexModelOptimizer().run("Krea 2 (Turbo)", "Optimal", "Lustify.safetensors", "Qwen3VL.safetensors", "qwen_image_vae.safetensors")
     assert out["result"][:3] == ("MODEL", "CLIP", "VAE")
 

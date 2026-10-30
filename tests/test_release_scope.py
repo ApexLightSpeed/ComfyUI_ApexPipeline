@@ -23,3 +23,16 @@ def test_generator_workflow_uses_only_released_apex_nodes():
     released = {"ApexModelOptimizer", "ApexRecipe", "ApexGenerate"}
     used = {n.get("type") for n in data.get("nodes", []) if str(n.get("type", "")).startswith("Apex")}
     assert used == released
+
+
+def test_generator_workflow_uses_standard_krea2_turbo_files_and_safe_defaults():
+    data = json.loads((ROOT / "workflows" / "Apex Generator v2.json").read_text(encoding="utf-8"))
+    optimizer = next(n for n in data["nodes"] if n.get("type") == "ApexModelOptimizer")
+    values = optimizer["widgets_values"]
+    assert values[2] == "krea2_turbo_fp8_scaled.safetensors"
+    assert values[3] == "qwen3vl_4b_fp8_scaled.safetensors"
+    assert values[4] == "qwen_image_vae.safetensors"
+    assert values[12] == "off"
+
+    lora_stack = next(n for n in data["nodes"] if n.get("type") == "PixaromaLoraLoader")
+    assert lora_stack["widgets_values"][0]["loras"] == []
