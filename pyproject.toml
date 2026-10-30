@@ -1,0 +1,26 @@
+[project]
+name = "apex-pipeline"
+version = "0.1.0"
+description = "ComfyUI custom nodes for the Apex Krea 2 image-generation workflow."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "ApexLightspeed" }]
+keywords = ["comfyui", "custom-nodes", "krea2", "image-generation", "lora", "metadata"]
+classifiers = [
+  "Environment :: GPU",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+]
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline"
+Issues = "https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline/issues"
+
+[tool.comfy]
+PublisherId = "REPLACE_WITH_COMFY_REGISTRY_PUBLISHER_ID"
+DisplayName = "Apex Pipeline"
+Icon = ""
+requires-comfyui = ">=0.26.0"
+includes = ["web", "workflows"]
