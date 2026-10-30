@@ -1,4 +1,4 @@
-"""Apex Pipeline — Generator-only first public release."""
+"""Apex Pipeline — Generator-only V1 release."""
 import logging
 
 _LOG = logging.getLogger("ComfyUI")

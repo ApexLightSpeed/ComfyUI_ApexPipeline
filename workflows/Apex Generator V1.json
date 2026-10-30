@@ -30,10 +30,10 @@
         }
       },
       "widgets_values": [
-        "APEX GENERATOR — GENERATOR-ONLY RELEASE\n\nOne saved PNG per run (LC Save Image). The workflow starts with the official base Krea 2 Turbo diffusion model, Qwen3-VL 4B text encoder, and Qwen Image VAE. Spectrum is set to off by default for compatibility.\n\nThe Pixaroma LoRA stack starts empty: no third-party LoRA downloads are required. You can add your own LoRAs at any time; Apex Recipe reads the live stack and records the applied LoRA names, strengths, and Civitai hashes in the PNG metadata.\n\nApex Generate holds steps / CFG / sampler / scheduler once and feeds the same settings to the metadata saver. Keep the saved PNG intact when sharing it."
+        "APEX GENERATOR V1 — GENERATOR-ONLY WORKFLOW\n\nOne saved PNG per run (LC Save Image). The workflow uses the standard Krea 2 Turbo diffusion model, Qwen3-VL 4B text encoder, and Qwen Image VAE. Spectrum is off by default.\n\nThe Pixaroma LoRA stack is completely empty. No author-specific or third-party LoRAs are preloaded or required. Add your own LoRAs when desired; Apex Recipe reads the live stack and records applied names, strengths, and Civitai-compatible hashes in the PNG metadata.\n\nThe prompt starts blank and the seed starts in Random mode. Apex Generate holds steps / CFG / sampler / scheduler once and feeds the same settings to the metadata saver. Keep the saved PNG intact when sharing it."
       ],
       "widgets_values_named": {
-        "text": "APEX GENERATOR v8\n\nOne saved PNG per run (LC Save Image). Pixaroma LoRA stack applies the LoRAs; Apex Recipe (live stack) reads that same stack from the queued graph and writes <lora:name:model:clip> tags so Civitai links every LoRA at its exact strength. Apex Generate holds steps/cfg/sampler/scheduler once and feeds the same values to the metadata saver.\n\nTEST ON YOUR MACHINE: one generation, then drop the PNG into the Refine stage."
+        "text": "APEX GENERATOR V1 — GENERATOR-ONLY WORKFLOW\n\nOne saved PNG per run (LC Save Image). The workflow uses the standard Krea 2 Turbo diffusion model, Qwen3-VL 4B text encoder, and Qwen Image VAE. Spectrum is off by default.\n\nThe Pixaroma LoRA stack is completely empty. No author-specific or third-party LoRAs are preloaded or required. Add your own LoRAs when desired; Apex Recipe reads the live stack and records applied names, strengths, and Civitai-compatible hashes in the PNG metadata.\n\nThe prompt starts blank and the seed starts in Random mode. Apex Generate holds steps / CFG / sampler / scheduler once and feeds the same settings to the metadata saver. Keep the saved PNG intact when sharing it."
       },
       "color": "#432",
       "bgcolor": "#653"
@@ -113,9 +113,9 @@
       "widgets_values_named": {
         "base_model": "Krea 2 (Turbo)",
         "goal": "Optimal",
-        "model_file": "lustifyNSFWCheckpoint_v10Krea2_2996235.safetensors",
-        "text_encoder": "Huihui-Qwen3-VL-4B-Instruct-abliterated-fp8_scaled.safetensors",
-        "vae": "★ Recommended",
+        "model_file": "krea2_turbo_fp8_scaled.safetensors",
+        "text_encoder": "qwen3vl_4b_fp8_scaled.safetensors",
+        "vae": "qwen_image_vae.safetensors",
         "speed_ups": "Auto",
         "attention": "auto",
         "fp16_accumulation": "auto",
@@ -123,7 +123,7 @@
         "torch_compile": "off",
         "qwen21_cache": "auto",
         "clip_type": "auto",
-        "spectrum": "",
+        "spectrum": "off",
         "lc_optimizer_face": ""
       },
       "color": "#3f3a54",
@@ -192,7 +192,7 @@
           "version": "7.8",
           "input_ue_unconnectable": {}
         },
-        "loraLoaderState": "{\"version\":1,\"loras\":[{\"id\":\"l10600482\",\"name\":\"TextRefusalReduction.safetensors\",\"on\":true,\"sm\":1,\"sc\":1,\"triggers\":[],\"custom\":[],\"at\":true},{\"id\":\"l5b202a37\",\"name\":\"G_B_Krea_v2_epoch_10.safetensors\",\"on\":true,\"sm\":0.2,\"sc\":0.2,\"triggers\":[],\"custom\":[],\"at\":true},{\"id\":\"l68aa618d\",\"name\":\"ZY JackermanStyle.safetensors\",\"on\":true,\"sm\":0.5,\"sc\":0.5,\"triggers\":[\"zy_jackerman\"],\"custom\":[],\"at\":true},{\"id\":\"l41822b33\",\"name\":\"NYL Style.safetensors\",\"on\":true,\"sm\":0.6,\"sc\":0.6,\"triggers\":[],\"custom\":[],\"at\":true},{\"id\":\"lecf5f0d5\",\"name\":\"\",\"on\":false,\"sm\":1,\"sc\":1,\"triggers\":[],\"custom\":[],\"at\":false},{\"id\":\"l3ebced09\",\"name\":\"\",\"on\":false,\"sm\":1,\"sc\":1,\"triggers\":[],\"custom\":[],\"at\":false},{\"id\":\"ld083c17e\",\"name\":\"NYL Style.safetensors\",\"on\":false,\"sm\":1,\"sc\":1,\"triggers\":[],\"custom\":[],\"at\":true}],\"sep\":\", \",\"step\":0.05,\"defStrength\":1,\"linkStrength\":true,\"civitai\":true,\"thumbs\":true,\"hideExt\":true,\"accent\":null,\"cacheMode\":\"last\"}"
+        "loraLoaderState": "{\"version\":1,\"loras\":[],\"sep\":\", \",\"step\":0.05,\"defStrength\":1,\"linkStrength\":true,\"civitai\":true,\"thumbs\":true,\"hideExt\":true,\"accent\":null,\"cacheMode\":\"last\"}"
       },
       "widgets_values": [
         {
@@ -212,80 +212,7 @@
       "widgets_values_named": {
         "loras_ui": {
           "version": 1,
-          "loras": [
-            {
-              "id": "l10600482",
-              "name": "TextRefusalReduction.safetensors",
-              "on": true,
-              "sm": 1,
-              "sc": 1,
-              "triggers": [],
-              "custom": [],
-              "at": true
-            },
-            {
-              "id": "l5b202a37",
-              "name": "G_B_Krea_v2_epoch_10.safetensors",
-              "on": true,
-              "sm": 0.2,
-              "sc": 0.2,
-              "triggers": [],
-              "custom": [],
-              "at": true
-            },
-            {
-              "id": "l68aa618d",
-              "name": "ZY JackermanStyle.safetensors",
-              "on": true,
-              "sm": 0.5,
-              "sc": 0.5,
-              "triggers": [
-                "zy_jackerman"
-              ],
-              "custom": [],
-              "at": true
-            },
-            {
-              "id": "l41822b33",
-              "name": "NYL Style.safetensors",
-              "on": true,
-              "sm": 0.6,
-              "sc": 0.6,
-              "triggers": [],
-              "custom": [],
-              "at": true
-            },
-            {
-              "id": "lecf5f0d5",
-              "name": "",
-              "on": false,
-              "sm": 1,
-              "sc": 1,
-              "triggers": [],
-              "custom": [],
-              "at": false
-            },
-            {
-              "id": "l3ebced09",
-              "name": "",
-              "on": false,
-              "sm": 1,
-              "sc": 1,
-              "triggers": [],
-              "custom": [],
-              "at": false
-            },
-            {
-              "id": "ld083c17e",
-              "name": "NYL Style.safetensors",
-              "on": false,
-              "sm": 1,
-              "sc": 1,
-              "triggers": [],
-              "custom": [],
-              "at": true
-            }
-          ],
+          "loras": [],
           "sep": ", ",
           "step": 0.05,
           "defStrength": 1,
@@ -339,7 +266,7 @@
         "cnr_id": "comfyui-pixaroma",
         "ver": "1.4.237",
         "promptState": {
-          "text": "Your propmt goes here.",
+          "text": "",
           "order": "mine",
           "sep": ", ",
           "accent": null,
@@ -392,9 +319,9 @@
         "ver": "1.4.237",
         "seedState": {
           "version": 1,
-          "mode": "fixed",
-          "seed": 1079545048917652,
-          "runSeed": 735915477938686
+          "mode": "random",
+          "seed": 0,
+          "runSeed": 0
         },
         "ue_properties": {
           "widget_ue_connectable": {},
@@ -1302,7 +1229,7 @@
   "config": {},
   "extra": {
     "frontendVersion": "1.57.4",
-    "workflow_notes": "Apex Generator v8",
+    "workflow_notes": "Apex Generator V1 — Generator-only workflow",
     "ds": {
       "scale": 0.6600000000000038,
       "offset": [

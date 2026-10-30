@@ -1,6 +1,6 @@
 [project]
 name = "apex-pipeline"
-version = "0.1.1"
+version = "1.0.0"
 description = "ComfyUI custom nodes for the Apex Krea 2 image-generation workflow."
 readme = "README.md"
 requires-python = ">=3.10"

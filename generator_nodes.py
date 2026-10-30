@@ -1,6 +1,6 @@
 """Apex Pipeline Generator nodes.
 
-This first public edition registers only the three nodes used by the Generator
+V1 registers only the three nodes used by the Generator
 workflow. Refinement, repair, upscale, and detailer nodes are intentionally not
 part of this release.
 """
