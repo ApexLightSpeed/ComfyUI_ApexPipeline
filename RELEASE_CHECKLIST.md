@@ -16,8 +16,9 @@
 - [x] Release-scope checks: 19 passed.
 - [x] Folder navigation/search harness passed; `node --check web/apex.js` and Python compilation passed.
 - [x] Live ComfyUI checked nested model browsing and searched, selected, added, then removed a local LoRA. No model was selected and no generation ran.
-- [ ] Review the release diff and push `main`.
-- [ ] Run **Actions → Publish to Comfy Registry** for v2.0.7, then confirm upload/review status.
-- [ ] Once approved in Registry, install v2.0.7 and check selectors on a clean install.
+- [x] Reviewed and pushed v2.0.7 source to `main` in commit `7b4e06d7ecef92902778fff04b83e58d14e7b0f2`.
+- [x] Publish run [41242060774](https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline/actions/runs/41242060774) succeeded; `Publish current version` completed.
+- [x] Registry version record `b100531f-f4e4-431b-a29b-d63c5a5b24c2` exists with status `NodeVersionStatusPending`.
+- [ ] After Registry review, install v2.0.7 and check selectors on a clean install.
 
 Registry package: `apex-pipeline` under publisher `apexlightspeed`. Versions are immutable; do not retry a published version number.
