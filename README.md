@@ -16,7 +16,13 @@ The workflow uses ComfyUI's normal model, image and widget data. The Apex surfac
 ## Install
 
 1. Install **ComfyUI_LC123_nodes** with ComfyUI Manager, or follow its instructions at [the LC123 GitHub page](https://github.com/lonecatone23/ComfyUI_LC123_nodes). Apex uses LC123 for Speed Boost and metadata-aware image saving; the model optimizer uses LC123 when available and has a native fallback.
-2. Install **Apex Pipeline** with ComfyUI Manager, or clone this repository into your active `ComfyUI/custom_nodes` folder. If you already have the `ComfyUI_ApexPipeline` folder, update that checkout rather than cloning a second copy.
+2. Install **Apex Pipeline** with ComfyUI Manager, or use a terminal in your active `ComfyUI/custom_nodes` folder:
+
+   ```powershell
+   git clone https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline.git
+   ```
+
+   If `ComfyUI_ApexPipeline` is already there, open that folder in a terminal and run `git pull` instead of cloning a second copy.
 3. Restart ComfyUI. If you added or updated model files, restart once more so the pickers see them.
 4. Open `workflows/Apex Generator V2.json` in ComfyUI.
 
