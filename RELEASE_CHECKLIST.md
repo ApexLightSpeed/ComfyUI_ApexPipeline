@@ -1,32 +1,23 @@
-# Apex Generator V2 release checklist
+# Apex Generator V2 — release checklist
 
-Current package: `apex-pipeline` v2.0.2. The Registry release source is GitHub commit `a0ed570de3aa30210cd05fbf1db4c19def55516f`. Documentation-only follow-up commits do not alter the package.
+Current package: `apex-pipeline` v2.0.3. This release fixes node-pack identity in the distributed workflow.
 
-## Package and workflow
+## Release contents and verification
 
-- [x] Four Apex nodes: Model Matrix, Generation Nexus, Archive, Image Preview; 17 valid links.
-- [x] Public starter has a blank prompt and empty LoRA stack, with no serialized personal model or LoRA values.
-- [x] Fixed-seed cache fingerprint includes the LoRA stack and enabled file revisions/strengths; random-seed runs still re-execute.
-- [x] Per-LoRA checkbox replaced by an accessible ON/OFF switch. Active count and next-queued-run guidance are visible.
-- [x] Independent model/CLIP strength sliders, ±0.05 controls and manual numeric entry remain available.
-- [x] README, changelog, dependency notes and simple installation steps are included.
-- [x] Registry archive v2.0.2 inspected (18 entries); starter workflow and updated Python/JS sources present.
+- [x] Clean four-node Apex workflow, 17 links, no saved model or LoRA selections.
+- [x] Each node includes `cnr_id: apex-pipeline` and `ver: 2.0.3` so ComfyUI can associate missing Apex node types with the Registry pack.
+- [x] Workflow builder stamps the same identity on regenerated files; a regression assertion checks all four nodes.
+- [x] README explains the “Unknown pack” warning and how to install the package.
+- [x] `node --check web/apex.js` passes; workflow JSON parses and identity/clean-starter checks pass.
+- [x] Registry artifact verified: 18 entries, package version 2.0.3, four nodes carry the expected CNR id/version, and no workflow widget values are serialized.
+- [ ] Python pytest was not run because Python/pytest were unavailable in the shell. Do not report the Python suite as passing.
 
-## Verification
+## Publication
 
-- [x] `node --check web/apex.js` passed.
-- [x] Workflow JSON parsed; four Apex node types, 17 links and no serialized widget values confirmed.
-- [x] Comfy Desktop restarted after preserving the active local workflow separately.
-- [x] Live ComfyUI showed the new switches and all four Apex node types registered.
-- [x] Post-restart generation with the saved LoRA stack completed successfully; queue is idle.
-- [ ] Python pytest suite was not run: Python and pytest are unavailable in the shell used for this release work. The backend loaded and executed the workflow, but this does not replace the test suite.
+- [x] Source is on GitHub main; code release commit `e7de7608719e595cffec3a45e16b592a48c7934b`.
+- [x] GitHub Actions publish run [41217974046](https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline/actions/runs/41217974046) completed successfully.
+- [x] Comfy Registry v2.0.3 uploaded as version ID `cc48a553-6be5-4075-bbe8-e69dc3f940b9`.
+- [ ] Registry review is pending. Until it activates, install from the GitHub repository if needed. Do not republish v2.0.3; versions are immutable.
+- [ ] Civitai's older workflow attachment still needs to be replaced by Apex. Upload `workflows/Apex Generator V2.json` from this release when ready; Civitai changes were not made here.
 
-## Publication status
-
-- [x] GitHub source commit `a0ed570de3aa30210cd05fbf1db4c19def55516f` pushed.
-- [x] GitHub Actions run [41185990694](https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline/actions/runs/41185990694) succeeded.
-- [x] Comfy Registry v2.0.2 uploaded (version ID `6e8cd189-2b26-4ab6-901b-ccc68b7c9168`).
-- [ ] Registry review is pending. Do not republish v2.0.2; published versions are immutable.
-- [ ] Civitai remains outside this assistance scope; Apex will handle that listing.
-
-The personal test workflow is saved locally as `Apex Generator V2 - Recovery 2026-10-31`. Never distribute it; use only `workflows/Apex Generator V2.json` for the clean public starter.
+The user's personal recovery workflow is local-only and must never be distributed.
