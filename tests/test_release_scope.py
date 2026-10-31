@@ -219,3 +219,11 @@ def test_v2_node_mappings_include_integrated_generation_and_output_nodes():
     names = {key.value for key in mapping.keys}
     assert {"ApexModelOptimizer", "ApexGenerationCore", "ApexLoraGenerationCore", "ApexOutput", "ApexPreview"} <= names
     assert "LCSaveImage" not in names and "LCSaveImageMetadata" not in names
+
+def test_v2_workflow_declares_registry_identity_for_every_apex_node():
+    data = load_workflow()
+    assert len(data["nodes"]) == 4
+    for node in data["nodes"]:
+        assert node["type"].startswith("Apex")
+        assert node["properties"]["cnr_id"] == "apex-pipeline"
+        assert node["properties"]["ver"] == "2.0.3"
