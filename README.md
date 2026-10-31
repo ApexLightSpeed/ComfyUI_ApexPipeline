@@ -13,6 +13,10 @@ The **Find triggers** button checks selected LoRA metadata on your computer firs
 
 The workflow uses ComfyUI's normal model, image and widget data. The Apex surfaces only change how the controls look and are arranged. The sampler, model loading, decode and save paths remain in the node execution graph.
 
+## Missing-node pack warning
+
+The V2.0.3 starter now writes the Comfy Registry package identity (`apex-pipeline`) onto every Apex node. This lets ComfyUI group missing Apex nodes under the correct pack instead of showing `Unknown pack`. If you already downloaded an older workflow copy, download the refreshed JSON below. If ComfyUI does not offer Registry installation yet, install Apex Pipeline from this repository using the steps above; Comfy Registry may still be reviewing the newest version.
+
 ## Install
 
 1. Install **ComfyUI_LC123_nodes** with ComfyUI Manager, or follow its instructions at [the LC123 GitHub page](https://github.com/lonecatone23/ComfyUI_LC123_nodes). Apex uses LC123 for Speed Boost and metadata-aware image saving; the model optimizer uses LC123 when available and has a native fallback.
