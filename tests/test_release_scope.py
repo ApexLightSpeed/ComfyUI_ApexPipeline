@@ -29,6 +29,12 @@ def test_v2_workflow_uses_four_apex_nodes_and_no_external_canvas_nodes():
     assert all(n["type"].startswith("Apex") for n in data["nodes"])
 
 
+def test_v2_workflow_uses_compact_reference_row():
+    data = load_workflow()
+    positions = [n["pos"] for n in data["nodes"]]
+    assert positions == [[60, 130], [570, 130], [1140, 130], [1650, 130]]
+
+
 def test_v2_workflow_id_is_unique_from_legacy_templates():
     data = load_workflow()
     template_ids = {
@@ -58,6 +64,18 @@ def test_v2_frontend_surface_is_scoped_away_from_legacy_workflows():
     assert set(re.findall(r'"([A-Za-z0-9_]+)"', types.group(1))) == {
         "ApexModelOptimizer", "ApexLoraGenerationCore", "ApexOutput", "ApexPreview"
     }
+
+
+def test_lora_strength_controls_support_slider_nudges_and_manual_values():
+    source = (ROOT / "web" / "apex.js").read_text(encoding="utf-8")
+    control = source[source.index("function strengthControl("):source.index("async function copyTriggerWord(")]
+    assert 'slider.min="-5"' in control
+    assert 'slider.max="5"' in control
+    assert 'slider.step="0.05"' in control
+    assert 'input.type="number";input.step="any"' in control
+    assert 'button("' not in control
+    assert 'nudge(-0.05)' in control and 'nudge(0.05)' in control
+    assert "Number.isFinite(next)" in control
     assert "function isV2Graph(graph=app.graph)" in source
     assert "function applyGraphTitleMode(graph=app.graph)" in source
     assert 'if(!isV2Graph(this.graph))' in source
