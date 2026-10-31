@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.5 — Searchable LoRA pickers
+
+- Adds type-to-search LoRA pickers when adding a LoRA or changing an entry already in the stack.
+- Keeps the existing ordered stack, ON/OFF switches, trigger lookup and independent model/CLIP strengths.
+- Does not change model loading, LoRA patching, sampling, image output or saved workflow metadata.
+
 ## 2.0.4 — Automatic Civitai workflow attribution
 
 - Adds the Apex Generator workflow AIR to saved PNG Civitai resource metadata automatically.

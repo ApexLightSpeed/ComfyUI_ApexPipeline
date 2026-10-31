@@ -1,11 +1,12 @@
 # Apex Generator V2 — release checklist
 
-Current package: `apex-pipeline` v2.0.4 candidate. Adds automatic Civitai workflow attribution to saved PNG metadata.
+Current package: `apex-pipeline` v2.0.5 candidate. Adds searchable LoRA pickers to the existing controls.
 
 ## Release contents and verification
 
 - [x] Clean four-node Apex workflow, 17 links, no saved model or LoRA selections.
-- [x] Each node includes `cnr_id: apex-pipeline` and `ver: 2.0.4` so ComfyUI can associate missing Apex node types with the Registry pack.
+- [x] Each node includes `cnr_id: apex-pipeline` and `ver: 2.0.5` so ComfyUI can associate missing Apex node types with the Registry pack.
+- [x] LoRA pickers support type-to-search when adding and editing a stack entry; existing LoRA controls and generation path are retained.
 - [x] Apex Archive adds AIR `urn:air:other:unknown:civitai:3027606@3441098` automatically; Civitai's current AIR map uses `unknown` for its Comfy workflow model type. The manual AIR field is hidden and the workflow-embedding checkbox remains visible and on by default.
 - [x] Output remains in `output/Apex`; Firefox uploaded from the shared directory, isolating the earlier file-access warning to Opera GX.
 - [x] Workflow builder stamps the same identity on regenerated files; a regression assertion checks all four nodes.
@@ -22,12 +23,19 @@ Current package: `apex-pipeline` v2.0.4 candidate. Adds automatic Civitai workfl
 - [ ] Registry review is pending. Until it activates, install from the GitHub repository if needed. Do not republish v2.0.3; versions are immutable.
 - [ ] Civitai's older workflow attachment still needs to be replaced by Apex. Upload `workflows/Apex Generator V2.json` from this release when ready; Civitai changes were not made here.
 
-## v2.0.4 candidate status
+## v2.0.4 publication checkpoint
 
-- Source and workflow edits are prepared locally. They are not yet committed to GitHub or published. Do not call this version published until the GitHub commit, successful Registry publish action, and Registry version record are verified.
-- Live ComfyUI installation has not yet been synced/restarted for this candidate.
+- Source and workflow edits are on GitHub main at commit `e37b2470d4c168cf53004352b24a784f15268ab4`.
+- [x] GitHub Actions publish run [41222552225](https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline/actions/runs/41222552225) completed successfully for that commit; the “Publish current version” step succeeded.
+- [ ] Confirm Registry v2.0.4 version ID and review/activation state on the package listing/API.
 - User's successful Firefox upload confirms the output folder does not need to change; do not add copies or redirect output into Downloads.
 - Verify Civitai recognizes the workflow resource when the candidate PNG is uploaded. Embedded ComfyUI `prompt`/`workflow` chunks are separate from the `civitaiResources` attribution field.
-- The Registry publishing workflow is manual (`workflow_dispatch`). The available GitHub connector cannot dispatch it, so Apex must run Actions → Publish to Comfy Registry after the candidate commit is pushed.
+- The Registry publishing workflow is manual (`workflow_dispatch`); it has now been run successfully for commit `e37b2470d4c168cf53004352b24a784f15268ab4`.
+
+## v2.0.5 candidate status
+
+- Source changes are prepared locally; workflow metadata version and Registry publication remain to be done.
+- The searchable picker is a UI-only change; it does not change Python model/LoRA application or sampling behavior.
+- Verify JS syntax, regenerate the clean workflow, then commit and publish only after checks pass.
 
 The user's personal recovery workflow is local-only and must never be distributed.
