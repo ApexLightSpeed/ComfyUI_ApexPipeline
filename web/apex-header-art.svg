@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 360" role="img" aria-label="Original etched crimson skull insignia on black">
+  <defs>
+    <linearGradient id="night" x2="1" y2=".3">
+      <stop stop-color="#050506"/><stop offset=".58" stop-color="#080607"/><stop offset="1" stop-color="#100405"/>
+    </linearGradient>
+    <linearGradient id="bone" x1=".08" y1=".08" x2=".84" y2=".95">
+      <stop stop-color="#e12a25"/><stop offset=".28" stop-color="#9f1717"/><stop offset=".68" stop-color="#4e0d10"/><stop offset="1" stop-color="#180608"/>
+    </linearGradient>
+    <radialGradient id="ember">
+      <stop stop-color="#7d1014" stop-opacity=".52"/><stop offset="1" stop-color="#180607" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="etch" width="12" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-24)">
+      <path d="M0 1h7M4 5h8M0 9h3" stroke="#ff3a31" stroke-opacity=".54" stroke-width=".8"/>
+      <circle cx="10" cy="2" r=".65" fill="#ff5548" fill-opacity=".55"/>
+    </pattern>
+    <pattern id="scratches" width="41" height="31" patternUnits="userSpaceOnUse" patternTransform="rotate(17)">
+      <path d="M2 6h9m13 8h14M7 25h18" stroke="#b51c1d" stroke-opacity=".16" stroke-width="1"/>
+    </pattern>
+    <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".66" numOctaves="2" seed="19" result="noise"/>
+      <feColorMatrix in="noise" values=".8 0 0 0 .05 0 .12 0 0 0 0 0 .08 0 0 0 0 0 .12 0"/>
+      <feBlend in="SourceGraphic" mode="screen"/>
+    </filter>
+    <linearGradient id="fade" x1="0" x2="1"><stop stop-color="white"/><stop offset=".48" stop-color="white" stop-opacity=".95"/><stop offset=".78" stop-color="black"/></linearGradient>
+    <mask id="leftFade"><rect width="1400" height="360" fill="url(#fade)"/></mask>
+  </defs>
+  <rect width="1400" height="360" fill="url(#night)"/>
+  <ellipse cx="1120" cy="176" rx="320" ry="220" fill="url(#ember)"/>
+  <!-- Original Apex insignia: a severe, three-quarter skull, etched rather than photorealistic. -->
+  <g transform="rotate(-43 1110 178) translate(0 0)" stroke-linejoin="round" stroke-linecap="round">
+    <!-- rear shadow and chipped silhouette -->
+    <path d="M1050 40l25-18 24 7 15-14 22 14 25-5 16 22 23 5 12 26 20 17-6 27 16 24-13 25 4 24-20 21-4 28-25 16-7 31-25 13-6 28-30 11-13 24-35-4-17 16-34-13-29 8-25-22-26 2-20-25-24-11-4-29-17-19 9-28-11-25 13-25-3-28 22-20 4-29 24-15 9-25 28-7 10-27 30-4 15-25z" fill="#090607" stroke="#7e1216" stroke-width="4"/>
+    <!-- crown and cheek plates -->
+    <path d="M1065 45l37-21 31 8 18-8 30 21 26 5 18 25-7 22 17 23-14 24-31 8-23 20-31 1-16-21-20-7-12-26-25-10-8-26 12-21-9-22z" fill="url(#bone)" stroke="#e42a25" stroke-width="3"/>
+    <path d="M1066 46l30-18 31 7 20 19-6 22-22 17-33-5-23-18z" fill="url(#etch)" stroke="#ff4135" stroke-width="1.3"/>
+    <path d="M1178 45l24 11 18 24-8 18-25-2-14-19z" fill="url(#etch)" stroke="#c62422" stroke-width="1.5"/>
+    <!-- brow ridges and deep, asymmetric sockets -->
+    <path d="M1075 91l27-15 30 6 14 15-15 13-32-1-22 12-13-12zM1161 83l26-9 30 20-5 23-29 8-21-14-15-1z" fill="#080607" stroke="#c32220" stroke-width="2"/>
+    <path d="M1083 91l20-8 17 5-12 9-18 5zM1172 87l17-5 18 12-6 13-17 3-14-10z" fill="#c41d1d" opacity=".74"/>
+    <path d="M1116 113l17-13 11 7-5 20-10 16-15-5 8-14z" fill="#070607" stroke="#e12a25" stroke-width="2"/>
+    <!-- muzzle, teeth plate and jaw -->
+    <path d="M1087 132l25 2 20 12 17-10 28-2 18 15-8 26-22 14-18 29-31 7-30-16-14-25-23-13 2-23z" fill="url(#bone)" stroke="#e12a25" stroke-width="2.5"/>
+    <path d="M1091 145l22 1 19 11 17-10 27-2 15 11-10 11-29 6-20 17-25-3-15-15-22-8z" fill="#090607" stroke="#9d1719" stroke-width="2"/>
+    <path d="M1105 158l16 1 4 17-13 3zM1130 159l15-7 5 23-15 6zM1154 154l14-5 3 21-16 5zM1176 151l12 4-5 18-11-4z" fill="url(#etch)" stroke="#c22522" stroke-width="1.1"/>
+    <path d="M1089 174l24 13 20 19 24-11 23-8-13 27-29 10-29-9-21-21z" fill="#160708" stroke="#d12420" stroke-width="2"/>
+    <!-- worn cuts, fissures, and engraved contours -->
+    <path d="M1052 75l16 11-10 20 17 9m-28 23 18-3 8 13m119-94-11 15 14 13m-22 124 14-15 22-4m-117 32 18 12-4 13m-42-83 12-15m82-80 12-7m-39 43 7 7m-31 64 9 8m42-4 13-8" fill="none" stroke="#ff493c" stroke-opacity=".62" stroke-width="1.7"/>
+    <path d="M1044 109l13-10m-19 54 12 4m54-118-7 13m112 27 10 14m-24 93 12 4m-72 64 9-10m-81-43 8 10m60-86 10-3" fill="none" stroke="#f13a32" stroke-opacity=".65" stroke-width="2"/>
+    <path d="M1031 75l-12-14m207 4 13-9m-223 127-14 8m208 88 13 6" fill="none" stroke="#d42120" stroke-width="3"/>
+  </g>
+  <rect width="1400" height="360" fill="url(#scratches)" opacity=".42" mask="url(#leftFade)"/>
+  <rect width="1400" height="360" fill="transparent" filter="url(#grain)" opacity=".25"/>
+  <path d="M0 353h1400" stroke="#791216" stroke-opacity=".8"/>
+</svg>

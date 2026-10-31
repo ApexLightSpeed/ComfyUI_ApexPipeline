@@ -1,81 +1,55 @@
-# Apex Generator V1
+# Apex Pipeline V2
 
-I built Apex Generator to make Krea 2 Turbo easier to run in ComfyUI. The workflow connects the model loader, prompt, optional LoRA stack, sampler and PNG metadata saver in one place.
+Apex Generator V2 keeps the usual Krea 2 image workflow in four Apex nodes. The controls, saved output and large preview stay on one clear row, so you can focus on the image instead of wiring a long chain of small utility nodes.
 
-This repository contains the Apex nodes and one workflow: **Apex Generator V1**. It does not contain model weights or third-party node packs.
+## The four nodes
 
-## What you need
+1. **Apex Model Matrix** loads the diffusion model, text encoder and VAE. It uses the installed LC123 optimizer when available.
+2. **Apex Generation Nexus** holds the prompt, canvas, seed, sampler and optional LoRAs. The LoRA stack supports up to 64 entries, with independent model and CLIP strengths, reordering, enable/disable, duplicate and remove controls. Strength has a −5 to +5 slider, 0.05 step buttons and a number field for any finite value.
+3. **Apex Archive** saves the image and embeds workflow, generation settings and resource hashes through LC123. It includes the run timer and one adjustable Last save preview.
+4. **Apex Image Preview** shows the generated image on its own. Drag its lower-right corner to resize it.
 
-- A working ComfyUI installation with current Krea 2 support. If you still need ComfyUI, start at the [official download page](https://www.comfy.org/download).
-- The three model files listed under [Download the models](#download-the-models).
-- The LC123 and Pixaroma custom nodes. They are separate projects and must be installed separately.
-- Git, if you use the manual install steps below.
+The **Find triggers** button checks selected LoRA metadata on your computer first. If that has no trigger words, it can look up the file's SHA-256 against Civitai's public model index. The LoRA file is not uploaded. Results appear as buttons you can click to copy. Civitai may not have a match for every file.
 
-**For the V1 workflow, use the Git install below.** The ComfyUI Registry copy is still v0.1.1 and does not include this V1 workflow yet.
+The workflow uses ComfyUI's normal model, image and widget data. The Apex surfaces only change how the controls look and are arranged. The sampler, model loading, decode and save paths remain in the node execution graph.
 
-## Install the nodes
+## Install
 
-The V1 workflow uses nodes from all three repositories below. In a terminal, change to your ComfyUI `custom_nodes` folder and clone each project there:
+1. Install **ComfyUI_LC123_nodes** with ComfyUI Manager, or follow its instructions at [the LC123 GitHub page](https://github.com/lonecatone23/ComfyUI_LC123_nodes). Apex uses LC123 for Speed Boost and metadata-aware image saving; the model optimizer uses LC123 when available and has a native fallback.
+2. Install **Apex Pipeline** with ComfyUI Manager, or clone this repository into your active `ComfyUI/custom_nodes` folder. If you already have the `ComfyUI_ApexPipeline` folder, update that checkout rather than cloning a second copy.
+3. Restart ComfyUI. If you added or updated model files, restart once more so the pickers see them.
+4. Open `workflows/Apex Generator V2.json` in ComfyUI.
 
-```bash
-cd /path/to/ComfyUI/custom_nodes
+For ComfyUI Desktop, use the `custom_nodes` folder belonging to the installation you actually run. Avoid keeping duplicate Apex Pipeline folders active at the same time.
 
-git clone https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline.git
-git clone https://github.com/lonecatone23/ComfyUI_LC123_nodes.git
-git clone https://gitlab.com/pixaroma/comfyui-pixaroma.git
-```
+## Model files
 
-On Windows, the folder is usually inside your ComfyUI install, for example:
+Use model files compatible with Comfy-Org's [Krea 2 release](https://huggingface.co/Comfy-Org/Krea-2), and follow that repository's model license. The standard Turbo setup uses:
 
-```powershell
-cd "C:\path\to\ComfyUI\custom_nodes"
-```
+| File | ComfyUI folder |
+| --- | --- |
+| `krea2_turbo_fp8_scaled.safetensors` | `models/diffusion_models/` |
+| `qwen3vl_4b_fp8_scaled.safetensors` | `models/text_encoders/` |
+| `qwen_image_vae.safetensors` | `models/vae/` |
 
-Replace the example path with your actual ComfyUI location, then run the three `git clone` commands. If you already have one of these folders, do not clone it again; update that folder using the instructions from its project instead.
+You can pick other compatible files in Apex Model Matrix. The supplied workflow starts with a blank prompt and no LoRAs, so it will not ask you to download someone else's LoRA collection.
 
-Close and restart ComfyUI after installing the nodes. If Pixaroma nodes appear blank or missing after an update, refresh the ComfyUI page with **Ctrl+Shift+R**.
+## First run
 
-### What each node pack provides
+1. In **Apex Model Matrix**, choose your Krea 2 model, text encoder and VAE.
+2. Type a prompt in **Apex Generation Nexus**. The starter uses 896 × 1344, batch 1, a random seed, 8 steps, CFG 1, Euler/simple and LC Speed Boost.
+3. Add LoRAs only if you need them. Adjust model and CLIP strengths independently; use **Find triggers** for an optional trigger-word lookup.
+4. Choose the filename, folder, image format and metadata options in **Apex Archive**.
+5. Queue the prompt. The Archive reports the save and shows a small preview; Apex Image Preview shows the same image larger.
 
-- **Apex Pipeline** provides Apex Model Optimizer, Apex Recipe and Apex Generate.
-- **LC123** provides the image saver and metadata nodes used by this workflow, plus the Speed Boost sampler and optimizer engine when available. The Apex optimizer has a native loader fallback, but LC123 is still needed for the workflow's save stage.
-- **Pixaroma** provides the LoRA stack, prompt, seed, resolution and run timer nodes.
+## Notes
 
-These are independent projects. Apex does not copy or redistribute their code. If you prefer ComfyUI Manager, install the same projects there and check that the node names above are available; the Pixaroma Registry listing may lag behind its upstream release.
+- **ComfyUI_LC123_nodes is required.** Apex calls its installed optimizer and save nodes; their source code is not copied into this repository.
+- Pixaroma is not required by the V2 graph.
+- The Apex preview is separate from saving: Archive writes the file, and Image Preview displays the generated image.
+- Find triggers runs only when you press its button. Its public lookup sends a file hash and LoRA name to Civitai, never the LoRA weights.
+- If something fails, include your ComfyUI version and the complete console traceback in a GitHub issue. Do not include API keys or access tokens.
 
-## Download the models
+## License
 
-Download these files from the [Comfy-Org Krea 2 model repository](https://huggingface.co/Comfy-Org/Krea-2). The Krea 2 files have their own license; please read and accept it on Hugging Face before downloading.
-
-| File | Put it in |
-|---|---|
-| [krea2_turbo_fp8_scaled.safetensors](https://huggingface.co/Comfy-Org/Krea-2/blob/main/diffusion_models/krea2_turbo_fp8_scaled.safetensors) | `ComfyUI/models/diffusion_models/` |
-| [qwen3vl_4b_fp8_scaled.safetensors](https://huggingface.co/Comfy-Org/Krea-2/blob/main/text_encoders/qwen3vl_4b_fp8_scaled.safetensors) | `ComfyUI/models/text_encoders/` |
-| [qwen_image_vae.safetensors](https://huggingface.co/Comfy-Org/Krea-2/blob/main/vae/qwen_image_vae.safetensors) | `ComfyUI/models/vae/` |
-
-Create a folder if it is missing. Restart ComfyUI after adding the files so the model lists refresh.
-
-## Open the workflow
-
-1. Download [`Apex Generator V1.json`](workflows/Apex%20Generator%20V1.json) from this repository.
-2. Open it in ComfyUI, or drag the JSON file onto the ComfyUI canvas.
-3. Enter a prompt and press **Queue Prompt**.
-
-The workflow opens with an empty LoRA stack, a blank prompt and a random seed. No author-specific LoRAs are needed. Add your own LoRAs in the Pixaroma stack when you want to use them; Apex Recipe reads that live stack and records LoRA names, strengths and Civitai-compatible hashes in the PNG metadata.
-
-The defaults are 8 steps, CFG 1, Euler and the simple scheduler. The workflow saves one PNG per run. Keep the PNG intact when uploading it to Civitai so its embedded generation metadata stays available.
-
-## If something is missing
-
-- **Red or missing nodes:** install the Apex, LC123 and Pixaroma node packs above, restart ComfyUI, then reload the workflow.
-- **Model names are missing from Apex Model Optimizer:** check the three folder locations above and restart ComfyUI.
-- **The LC123 optimizer picker fails:** include the full ComfyUI console traceback in a bug report. The Apex adapter narrows model discovery, but the fallback loader does not reproduce LC123's hardware-aware optimization patches.
-- **PNG does not show the expected Civitai details:** use the PNG produced by the workflow without converting or re-saving it in another application.
-
-For support, include your ComfyUI version, operating system, the node that failed and the complete console traceback. Never include API keys or access tokens.
-
-## License and project scope
-
-Apex Pipeline is licensed under MIT; see [LICENSE](LICENSE). The Krea 2 model files and the LC123 and Pixaroma node packs are governed by their respective projects' terms. No model weights or third-party source code are included here.
-
-This repository is for the Generator workflow only. Refine, Context Repair, Upscale and Detailer workflows are separate projects and are not part of this package.
+Apex Pipeline is MIT licensed; see [LICENSE](LICENSE). LC123 and the model files retain their own licenses. This repository does not redistribute their code or model weights.

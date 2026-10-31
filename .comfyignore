@@ -6,4 +6,10 @@ __pycache__/
 .pytest_cache/
 .venv/
 tests/
+runtime/
+build_v2_workflow.py
+V2_REDESIGN_NOTES.md
+RELEASE_CHECKLIST.md
+workflows/Apex Generator V1.json
+workflows/Apex Generator V2 Prototype.json
 node.zip

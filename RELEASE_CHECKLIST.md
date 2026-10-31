@@ -1,35 +1,20 @@
-# Apex Pipeline V1 (1.0.0) — Generator-only release checklist
+# Apex Generator V2 release checklist
 
-## Registry identity and publishing
+## Release package
 
-- [x] GitHub repository: https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline
-- [x] Comfy Registry Publisher ID: `apexlightspeed`
-- [x] Package ID: `apex-pipeline`
-- [ ] Commit and push the 1.0.0 changes to GitHub.
-- [ ] Publish version 1.0.0 with `comfy node publish` using the Registry token interactively.
+- [x] Four Apex nodes in a single horizontal row: Model Matrix, Generation Nexus, Archive, Image Preview.
+- [x] Starter prompt and LoRA stack are empty; existing graph wiring and generation defaults are preserved.
+- [x] LoRA model and CLIP strengths have −5…+5 sliders, ±0.05 buttons, and direct numeric entry for any finite value.
+- [x] Archive has one small Last save image; the dedicated Preview displays the same generated image larger.
+- [x] README and changelog describe V2 in plain language and include install and model setup steps.
+- [x] `node --check web/apex.js` passed; the starter JSON parses and contains 4 nodes and 17 links.
+- [ ] Run the ComfyUI embedded Python compile and release checks. Python is not available on the normal shell PATH in the current environment.
+- [ ] Live-check LoRA strength entry/buttons, node placement, and a generation in ComfyUI after updating the installed extension.
 
-## Generator-only acceptance
+## Publish sequence
 
-- [x] Exactly one workflow is shipped: `Apex Generator V1.json`.
-- [x] Exactly three Apex nodes are registered: Apex Model Optimizer, Apex Recipe, and Apex Generate.
-- [x] Workflow selects the standard Krea 2 Turbo diffusion model, Qwen3-VL 4B text encoder, and Qwen Image VAE.
-- [x] Spectrum is `off` in the workflow and newly-created Apex Model Optimizer nodes.
-- [x] Pixaroma LoRA state is empty in the widget, named snapshot, and serialized frontend state.
-- [x] Prompt is blank in the widget, named snapshot, and serialized frontend state.
-- [x] Seed widget and saved frontend state agree on Random mode.
-- [x] Model Optimizer named widget metadata matches its visible widget values.
-- [x] Obsolete workflow v8 and Refine-stage notes are removed.
-- [ ] Install Registry version 1.0.0 over the prior version and verify all three Apex nodes register.
-- [ ] Queue a generation and verify image output plus PNG prompt / seed / sampler / scheduler metadata.
-- [ ] Confirm no missing-LoRA download prompts appear on workflow open.
+1. Update and verify the `main` branch of [ApexLightSpeed/ComfyUI_ApexPipeline](https://github.com/ApexLightSpeed/ComfyUI_ApexPipeline).
+2. Publish `apex-pipeline` to the ComfyUI Registry under publisher `apexlightspeed`.
+3. Update the existing Civitai workflow listing with the V2 workflow and description.
 
-## External dependencies
-
-- LC123 remains an external dependency for the optimizer engine, Speed Boost, and LC Save Image / metadata nodes.
-- Pixaroma remains an external dependency for the LoRA stack, prompt, seed, resolution, and runtime nodes.
-- No checkpoint, text encoder, VAE, or LoRA weights are bundled by Apex.
-- LC123 and Pixaroma source code are not copied into this repository.
-
-## Release scope
-
-This remains a Generator-only package. Refine, Context Repair, Upscale, and Detailer are not included.
+Apex explicitly authorized this sequence on 2026-10-31. If a Registry or Civitai account action needs a login, key, or browser confirmation that is not available in this session, prepare the submission first and report the specific step that requires Apex.
