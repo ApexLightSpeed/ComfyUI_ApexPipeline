@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.3 — Registry identity in the starter workflow
+
+- Adds Comfy Registry package identity and package version metadata to each Apex node in the clean V2 starter. ComfyUI can now associate missing Apex node types with the `apex-pipeline` pack instead of grouping them as “Unknown pack.”
+- Updates the workflow builder so regenerated templates retain the same identity.
+- Adds a release assertion covering the pack identity on all four Apex nodes.
+- No node execution or sampling behavior changes.
+
+# Changelog
+
 ## 2.0.2 — LoRA stack reliability and control polish
 
 - Fixes fixed-seed cache identity so adding, enabling, disabling, reordering, or changing LoRA strengths invalidates stale generation output; enabled file size and modification changes also refresh the LoRA patch.
