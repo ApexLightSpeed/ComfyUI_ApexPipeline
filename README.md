@@ -15,7 +15,7 @@ The workflow uses ComfyUI's normal model, image and widget data. The Apex surfac
 
 ## Missing-node pack warning
 
-The V2.0.5 starter writes the Comfy Registry package identity (`apex-pipeline`) onto every Apex node. This lets ComfyUI group missing Apex nodes under the correct pack instead of showing `Unknown pack`. If you already downloaded an older workflow copy, download the refreshed JSON below. If ComfyUI does not offer Registry installation yet, install Apex Pipeline from this repository using the steps above; Comfy Registry may still be reviewing the newest version.
+The V2.0.6 starter writes the Comfy Registry package identity (`apex-pipeline`) onto every Apex node. This lets ComfyUI group missing Apex nodes under the correct pack instead of showing `Unknown pack`. If you already downloaded an older workflow copy, download the refreshed JSON below. If ComfyUI does not offer Registry installation yet, install Apex Pipeline from this repository using the steps above; Comfy Registry may still be reviewing the newest version.
 
 ## Install
 

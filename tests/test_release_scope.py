@@ -226,4 +226,4 @@ def test_v2_workflow_declares_registry_identity_for_every_apex_node():
     for node in data["nodes"]:
         assert node["type"].startswith("Apex")
         assert node["properties"]["cnr_id"] == "apex-pipeline"
-        assert node["properties"]["ver"] == "2.0.5"
+        assert node["properties"]["ver"] == "2.0.6"

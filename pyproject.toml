@@ -1,6 +1,6 @@
 [project]
 name = "apex-pipeline"
-version = "2.0.5"
+version = "2.0.6"
 description = "Four Apex nodes for Krea 2 generation, LoRA control, metadata-aware saves and a resizable image preview."
 readme = "README.md"
 requires-python = ">=3.10"

@@ -11,7 +11,7 @@ model = next(n for n in old["nodes"] if n["type"] == "ApexModelOptimizer")
 model = json.loads(json.dumps(model))
 model.update(id=1, pos=[60, 130], size=[500, 650], order=0)
 model["title"] = "APEXLIGHTSPEED · APEX MODEL MATRIX"
-model.setdefault("properties", {}).update(cnr_id="apex-pipeline", ver="2.0.5")
+model.setdefault("properties", {}).update(cnr_id="apex-pipeline", ver="2.0.6")
 # Model choices are populated dynamically from the active install. Old positional
 # values from the prototype may belong to different dropdown schemas.
 model.pop("widgets_values", None)
@@ -24,7 +24,7 @@ def props(node_type):
     return {
         "Node name for S&R": node_type,
         "cnr_id": "apex-pipeline",
-        "ver": "2.0.5",
+        "ver": "2.0.6",
         "ue_properties": {"widget_ue_connectable": {}, "input_ue_unconnectable": {}, "version": "7.8"},
     }
 

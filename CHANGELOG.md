@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.6 — LoRA search and dropdowns
+
+- Keeps the local filename search field and restores native dropdowns for selecting LoRAs to add or edit.
+- No model loading, LoRA application, sampling, output or metadata behavior changes.
+
 ## 2.0.5 — Searchable LoRA pickers
 
 - Adds a separate search field that filters the existing LoRA dropdowns for both adding and changing stack entries.
