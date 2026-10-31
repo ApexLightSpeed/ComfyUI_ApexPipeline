@@ -37,7 +37,7 @@ Current package: `apex-pipeline` v2.0.6 candidate. Adds the requested separate L
 - Registry v2.0.5 is the older text/datalist picker and cannot be overwritten. The publish attempt for commit `43f8810` was rejected as duplicate version.
 - v2.0.6 contains the final separate search field plus native dropdowns for Add LoRA and existing rows. Backend and generation code are unchanged.
 - [x] JavaScript syntax passes; clean workflow JSON has four nodes, 17 links and v2.0.6 Registry identity on all Apex nodes.
-- [ ] Push the v2.0.6 source to GitHub `main`.
+- [x] Pushed to GitHub `main` in commit `2c48c6cc565a90ee021a0e618f1a28548d39031d`.
 - [ ] User dispatches **Actions → Publish to Comfy Registry** for v2.0.6.
 - [ ] After Registry review, confirm the version listing and install/update it in ComfyUI.
 
