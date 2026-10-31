@@ -5,7 +5,7 @@ Apex Generator V2 keeps the usual Krea 2 image workflow in four Apex nodes. The 
 ## The four nodes
 
 1. **Apex Model Matrix** loads the diffusion model, text encoder and VAE. It uses the installed LC123 optimizer when available.
-2. **Apex Generation Nexus** holds the prompt, canvas, seed, sampler and optional LoRAs. Type part of a filename to search the local LoRA list when adding or changing a stack entry. The stack supports up to 64 entries, with independent model and CLIP strengths, reordering, duplicate and remove controls, and a clear per-LoRA ON/OFF switch. Changes are applied on the next queued run. Strength has a −5 to +5 slider, 0.05 step buttons and a number field for any finite value.
+2. **Apex Generation Nexus** holds the prompt, canvas, seed, sampler and optional LoRAs. Use the separate search field to filter local LoRA files, then choose the result from the familiar dropdown. The search filters both the Add LoRA picker and the selectors on existing stack rows. The stack supports up to 64 entries, with independent model and CLIP strengths, reordering, duplicate and remove controls, and a clear per-LoRA ON/OFF switch. Changes are applied on the next queued run. Strength has a −5 to +5 slider, 0.05 step buttons and a number field for any finite value.
 3. **Apex Archive** saves the image and embeds workflow, generation settings and resource hashes through LC123. It includes the run timer and one adjustable Last save preview.
 4. **Apex Image Preview** shows the generated image on its own. Drag its lower-right corner to resize it.
 

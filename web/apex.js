@@ -23,7 +23,6 @@ const THEME = `
 .apx-section{border:1px solid #353238;border-radius:7px;margin:8px 10px;padding:8px;background:linear-gradient(145deg,#121012,#0d0c0e)}.apx-section[data-accent="red"]{border-color:#641a1e}.apx-section[data-accent="cyan"]{border-color:#493034}.apx-label{display:flex;justify-content:space-between;align-items:center;margin:0 0 7px;color:#e25459;font:700 9px Arial,sans-serif;letter-spacing:.8px;text-transform:uppercase}.apx-section[data-accent="cyan"] .apx-label{color:#bb777a}
 .apx-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.apx-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.apx-field{min-width:0;display:flex;flex-direction:column;gap:4px}.apx-field.wide{grid-column:1/-1}.apx-field label{color:#aaa0a4;font:9px Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.apx-input{box-sizing:border-box;width:100%;height:29px;border:1px solid #383238;border-radius:5px;background:#1a171b;color:#f0e9eb;padding:5px 8px;font:11px Arial,sans-serif;outline:none}.apx-input:focus{border-color:#c31820;box-shadow:0 0 0 1px #c3182055}.apx-input[type=number]{font-variant-numeric:tabular-nums}.select.apx-input,select.apx-input{appearance:none;padding-right:26px;background-image:linear-gradient(45deg,transparent 50%,#d35a60 50%),linear-gradient(135deg,#d35a60 50%,transparent 50%);background-position:calc(100% - 12px) 12px,calc(100% - 8px) 12px;background-size:4px 4px,4px 4px;background-repeat:no-repeat}select.apx-input option{background:#171317;color:#f4ecee}.apx-text{height:92px;resize:vertical;line-height:1.35}.apx-toggle{height:29px;display:flex;align-items:center;gap:8px;color:#ddd;font-size:10px}.apx-toggle input{accent-color:#c31820;width:15px;height:15px}.apx-foot{display:flex;justify-content:space-between;border-top:1px solid #2d2528;padding-top:7px;margin-top:8px;color:#7c7378;font:8px monospace;letter-spacing:.3px}.apx-status{color:#aaa;font:10px monospace;white-space:pre-wrap;overflow-wrap:anywhere}.apx-preview{display:block;width:100%;max-height:340px;object-fit:contain;border:1px solid #493034;border-radius:5px;background:#080809;margin-top:7px}.apx-hint{color:#898086;font:9px Arial,sans-serif;line-height:1.35;margin-top:5px}
 .apx-clock-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:38px}.apx-clock{color:#e25459;font:700 25px/1 ui-monospace,Consolas,monospace;letter-spacing:1px;font-variant-numeric:tabular-nums}.apx-clock[data-state="running"]{color:#df565b;text-shadow:0 0 12px #c3182055}.apx-clock-state{color:#9a9095;font:9px monospace;letter-spacing:.5px;text-align:right}
-.apx-lora-picker{display:block;min-width:0}.apx-lora-picker .apx-input{width:100%}
 .apx-lora-list{display:grid;gap:6px;max-height:390px;overflow:auto;padding-right:3px}.apx-lora-row{border:1px solid #332a2e;border-radius:6px;background:#151216;padding:6px}.apx-lora-top{display:grid;grid-template-columns:44px minmax(0,1fr) 24px 24px 24px 24px;gap:5px;align-items:center}.apx-lora-top .apx-input{height:27px}.apx-lora-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,.72fr) minmax(90px,.72fr);gap:7px;margin-top:6px}.apx-lora-fields .apx-input{height:27px}.apx-lora-fields .apx-field label{font-size:8px}.apx-lora-row[data-off="true"]{opacity:.68}.apx-lora-switch{position:relative;width:42px;height:23px;padding:0 5px 0 22px;border:1px solid #5a3a3e;border-radius:999px;background:#282226;color:#aaa0a4;font:700 8px/1 Arial,sans-serif;letter-spacing:.04em;cursor:pointer;transition:background .14s,border-color .14s,color .14s}.apx-lora-switch:before{content:"";position:absolute;left:3px;top:3px;width:15px;height:15px;border-radius:50%;background:#87777b;box-shadow:0 1px 3px #0009;transition:transform .14s,background .14s}.apx-lora-switch[aria-checked="true"]{padding:0 21px 0 5px;border-color:#b52b32;background:#521419;color:#ffe5e6}.apx-lora-switch[aria-checked="true"]:before{transform:translateX(19px);background:#ff5961;box-shadow:0 0 8px #d3212a66}.apx-lora-switch:focus-visible{outline:2px solid #ee565d;outline-offset:2px}.apx-lora-helper{margin:-2px 0 6px;color:#988b90;font:9px Arial,sans-serif}.apx-mini-button,.apx-add-button{height:27px;border:1px solid #463338;border-radius:5px;background:#21191e;color:#eee4e6;font:10px Arial,sans-serif;cursor:pointer;transition:border-color .12s ease,background .12s ease,color .12s ease}.apx-mini-button:hover,.apx-add-button:hover{border-color:#c31820;background:#2c171b;color:#ff9a9e}.apx-mini-button:disabled,.apx-add-button:disabled{opacity:.36;cursor:default}.apx-lora-addbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:5px;margin-top:7px}.apx-lora-empty{padding:12px 8px;border:1px dashed #393036;border-radius:5px;color:#999096;text-align:center;font:10px Arial,sans-serif}
 .apx-lora-heading{display:flex;justify-content:space-between;align-items:center}.apx-lora-heading-tools{display:flex;gap:7px;align-items:center}.apx-trigger-scan{height:23px;padding:0 8px;border:1px solid #8f1c23;border-radius:4px;background:linear-gradient(180deg,#8e171d,#4e0b10);color:#ffe6e7;font:700 8px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px #ffffff20,0 0 10px #c3182022}.apx-trigger-scan:hover{border-color:#e25459;background:linear-gradient(180deg,#aa2027,#641016)}.apx-trigger-scan:disabled{opacity:.42;cursor:wait}.apx-trigger-results{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}.apx-trigger-chip{max-width:100%;padding:3px 7px;border:1px solid #7b232a;border-radius:999px;background:#351317;color:#ffdfe0;font:9px Arial,sans-serif;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.apx-trigger-chip:hover{background:#58151b;border-color:#d9444b}.apx-trigger-source{color:#97898e;font:8px monospace}.apx-trigger-status{min-height:11px;margin-top:5px;color:#bc8c90;font:9px Arial,sans-serif}
 .apx-strength{display:grid;grid-template-columns:24px minmax(0,1fr) 24px 64px;align-items:center;gap:4px;height:27px}.apx-strength input[type=range]{width:100%;height:15px;accent-color:#c31820;margin:0;cursor:pointer}.apx-strength .apx-strength-step{height:23px;padding:0;border:1px solid #463338;border-radius:4px;background:#21191e;color:#f0dfe1;font:13px Arial,sans-serif;line-height:1;cursor:pointer}.apx-strength .apx-strength-step:hover{border-color:#c31820;background:#2c171b}.apx-strength .apx-strength-value{height:25px;padding:3px 5px;text-align:right;font:10px ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}.apx-preview-size-row{display:grid;grid-template-columns:auto minmax(0,1fr) 42px;align-items:center;gap:8px;color:#b5a9ad;font:9px Arial,sans-serif;margin-top:7px}.apx-preview-size-row input{width:100%;accent-color:#c31820}.apx-preview-size-row output{color:#e4d5d7;text-align:right;font:9px ui-monospace,Consolas,monospace}
@@ -83,31 +82,24 @@ function writeLoraRows(node,rows){
   if(stack)setValue(node,stack,JSON.stringify(rows));
   if(tags)setValue(node,tags,loraTagText(rows));
   const count=node._apxLoraCount;if(count){const active=rows.filter(r=>r.on!==false&&r.name&&r.name!=="(none)").length;count.textContent=`${active} active · ${rows.length} / ${MAX_LORA_ROWS}`;}
-  if(node._apxLoraAdd)node._apxLoraAdd.disabled=rows.length>=MAX_LORA_ROWS||!node._apxLoraPicker?.hasSelection();
+  if(node._apxLoraAdd)node._apxLoraAdd.disabled=rows.length>=MAX_LORA_ROWS||node._apxLoraPicker?.value==="(none)";
 }
-let loraPickerSequence=0;
-function loraCombo(values,current){
-  const wrap=document.createElement("div");wrap.className="apx-lora-picker";
-  const s=document.createElement("input");s.type="search";s.className="apx-input";s.autocomplete="off";s.spellcheck=false;s.setAttribute("role","combobox");s.setAttribute("aria-autocomplete","list");s.placeholder="Type to search LoRAs…";
-  const datalist=document.createElement("datalist");datalist.id=`apx-lora-options-${++loraPickerSequence}`;s.setAttribute("list",datalist.id);
+function fillLoraCombo(select,values,current,query=""){
   const options=Array.isArray(values)?values:["(none)"];
-  const ordered=options.filter(v=>v!=="(none)").sort((a,b)=>String(a).localeCompare(String(b),undefined,{sensitivity:"base"}));
-  const list=["(none)",...new Set(ordered)];
-  if(current&&!list.includes(current))list.splice(1,0,current);
-  const refreshMatches=()=>{
-    const query=s.value.trim().toLowerCase();
-    const matches=list.filter(v=>!query||String(v).toLowerCase().includes(query)).slice(0,100);
-    datalist.replaceChildren();
-    matches.forEach(v=>{const o=document.createElement("option");o.value=String(v);datalist.append(o)});
-  };
-  refreshMatches();s.addEventListener("input",refreshMatches);s.addEventListener("focus",refreshMatches);
-  s.value=String(current??"(none)");wrap.append(s,datalist);
-  wrap.input=s;wrap.validValues=new Set(list.map(String));
-  wrap.isValid=()=>wrap.validValues.has(s.value);
-  wrap.hasSelection=()=>wrap.isValid()&&s.value!=="(none)";
-  wrap.addEventListener=(...args)=>s.addEventListener(...args);
-  Object.defineProperty(wrap,"value",{get:()=>s.value,set:value=>{s.value=String(value??"")}});
-  return wrap;
+  const all=[...new Set(options.filter(v=>v!=="(none)").map(String))].sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:"base"}));
+  const q=String(query||"").trim().toLowerCase();
+  const matches=all.filter(name=>!q||name.toLowerCase().includes(q));
+  if(current&&current!=="(none)"&&!matches.includes(String(current)))matches.unshift(String(current));
+  select.replaceChildren();
+  const none=document.createElement("option");none.value="(none)";none.textContent="(none)";select.append(none);
+  if(!matches.length){const empty=document.createElement("option");empty.disabled=true;empty.value="";empty.textContent="No matching LoRAs";select.append(empty);}
+  matches.forEach(name=>{const option=document.createElement("option");option.value=name;option.textContent=name;select.append(option)});
+  select.value=current&&[...select.options].some(option=>option.value===String(current))?String(current):"(none)";
+  return select;
+}
+function loraCombo(values,current,query=""){
+  const select=document.createElement("select");select.className="apx-input";
+  return fillLoraCombo(select,values,current,query);
 }
 function loraField(labelText,input){
   const field=document.createElement("div");field.className="apx-field";
@@ -169,7 +161,7 @@ function renderLoraRows(node,rows=readLoraRows(node)){
     const enabled=document.createElement("button");enabled.type="button";enabled.className="apx-lora-switch";enabled.setAttribute("role","switch");
     const syncEnabled=()=>{const active=row.on!==false;enabled.setAttribute("aria-checked",String(active));enabled.textContent=active?"ON":"OFF";enabled.title=active?"LoRA is active for the next queued run":"LoRA is bypassed";enabled.setAttribute("aria-label",(active?"Bypass ":"Apply ")+(row.name||"selected LoRA"));item.dataset.off=String(!active)};
     syncEnabled();enabled.addEventListener("click",()=>{row.on=row.on===false;syncEnabled();writeLoraRows(node,rows)});
-    const select=loraCombo(values,row.name||"(none)");select.input.setAttribute("aria-label","Search or select LoRA file");select.input.title="Type part of a filename, then choose a matching LoRA";select.addEventListener("change",()=>{if(!select.isValid()){select.value=row.name||"(none)";return;}row.name=select.value==="(none)"?"":select.value;syncEnabled();writeLoraRows(node,rows)});
+    const select=loraCombo(values,row.name||"(none)",node._apxLoraFilter||"");select.setAttribute("aria-label","Select LoRA file");select.title="Choose a LoRA from the filtered local list";select.addEventListener("change",()=>{row.name=select.value==="(none)"?"":select.value;syncEnabled();writeLoraRows(node,rows)});
     const button=(label,title,fn,disabled=false)=>{const b=document.createElement("button");b.type="button";b.className="apx-mini-button";b.textContent=label;b.title=title;b.disabled=disabled;b.addEventListener("click",fn);return b;};
     top.append(enabled,select,
       button("↑","Move up",()=>{if(index>0){[rows[index-1],rows[index]]=[rows[index],rows[index-1]];writeLoraRows(node,rows);renderLoraRows(node,rows)}},index===0),
@@ -184,7 +176,7 @@ function renderLoraRows(node,rows=readLoraRows(node)){
     fields.append(triggerField,strengthControl(node,rows,row,"sm","MODEL STRENGTH"),strengthControl(node,rows,row,"sc","CLIP STRENGTH"));
     item.append(top,fields);list.append(item);
   });
-  if(node._apxLoraAdd)node._apxLoraAdd.disabled=rows.length>=MAX_LORA_ROWS||!node._apxLoraPicker?.hasSelection();
+  if(node._apxLoraAdd)node._apxLoraAdd.disabled=rows.length>=MAX_LORA_ROWS||node._apxLoraPicker?.value==="(none)";
   if(node._apxLoraToggleAll){node._apxLoraToggleAll.textContent=rows.length&&rows.every(r=>r.on)?"Disable all":"Enable all";node._apxLoraToggleAll.disabled=!rows.length;}
 }
 const RESOLUTION_DEFAULT={mode:"preset",ratio:"2:3",w:896,h:1344,custom_w:1024,custom_h:1024,custom_ratio_w:4,custom_ratio_h:3,snap:16};
@@ -360,20 +352,23 @@ function buildBody(node, type) {
     const scan=document.createElement("button");scan.type="button";scan.className="apx-trigger-scan";scan.textContent="Find triggers";scan.title="Reads local metadata first. If needed, only the selected file's SHA-256 is sent to Civitai for a public model-version lookup; no model data is uploaded.";scan.addEventListener("click",()=>scanLoraTriggerWords(node));
     const count=document.createElement("span");count.textContent=`0 active · 0 / ${MAX_LORA_ROWS}`;
     headingTools.append(scan,count);loraHeading.append(headingTools);
-    const helper=document.createElement("div");helper.className="apx-lora-helper";helper.textContent="Search any part of a filename to find a LoRA. Enabled entries apply on the next queued run; model and CLIP strengths are independent.";
+    const helper=document.createElement("div");helper.className="apx-lora-helper";helper.textContent="Search local LoRA filenames, then choose from the dropdown. The list filters for adding and changing entries; enabled LoRAs apply on the next queued run.";
+    const search=document.createElement("input");search.type="search";search.className="apx-input";search.placeholder="Search local LoRA files…";search.setAttribute("aria-label","Search local LoRA files");search.value=String(node._apxLoraFilter||"");
+    const searchField=loraField("SEARCH LOCAL LORAS",search);
     const list=document.createElement("div");list.className="apx-lora-list";
     const catalog=loraWidget(node,"lora_catalog");const values=catalog?.options?.values||["(none)"];
     const addbar=document.createElement("div");addbar.className="apx-lora-addbar";
-    const picker=loraCombo(values,"(none)");
+    const picker=loraCombo(values,"(none)",search.value);
     const add=document.createElement("button");add.type="button";add.className="apx-add-button";add.textContent="Add LoRA";add.disabled=true;add.title="Search for and choose a LoRA first.";
-    const syncAdd=()=>{add.disabled=!picker.hasSelection()||readLoraRows(node).length>=MAX_LORA_ROWS;add.title=add.disabled?"Search for and choose a LoRA first.":"Add the selected LoRA to the stack."};
-    picker.input.setAttribute("aria-label","Search local LoRAs");picker.addEventListener("input",syncAdd);picker.addEventListener("change",syncAdd);
-    add.addEventListener("click",()=>{const rows=readLoraRows(node);if(rows.length>=MAX_LORA_ROWS||!picker.hasSelection())return;rows.push({name:picker.value,on:true,sm:1,sc:1,trigger:""});writeLoraRows(node,rows);renderLoraRows(node,rows)});
+    const syncAdd=()=>{add.disabled=picker.value==="(none)"||readLoraRows(node).length>=MAX_LORA_ROWS;add.title=add.disabled?"Search for and choose a LoRA first.":"Add the selected LoRA to the stack."};
+    picker.addEventListener("change",syncAdd);
+    search.addEventListener("input",()=>{node._apxLoraFilter=search.value;fillLoraCombo(picker,values,"(none)",search.value);syncAdd();renderLoraRows(node)});
+    add.addEventListener("click",()=>{const rows=readLoraRows(node);if(rows.length>=MAX_LORA_ROWS||picker.value==="(none)")return;rows.push({name:picker.value,on:true,sm:1,sc:1,trigger:""});writeLoraRows(node,rows);renderLoraRows(node,rows)});
     const toggleAll=document.createElement("button");toggleAll.type="button";toggleAll.className="apx-add-button";toggleAll.textContent="Enable all";toggleAll.disabled=true;toggleAll.title="Enable or disable every LoRA in the stack.";
     toggleAll.addEventListener("click",()=>{const rows=readLoraRows(node);const turnOn=rows.some(r=>!r.on);rows.forEach(r=>r.on=turnOn);writeLoraRows(node,rows);renderLoraRows(node,rows)});
     const scanStatus=document.createElement("div");scanStatus.className="apx-trigger-status";scanStatus.setAttribute("aria-live","polite");
-    addbar.append(picker,add,toggleAll);loraBox.append(loraHeading,helper,list,addbar,scanStatus);root.append(loraBox);
-    node._apxLoraList=list;node._apxLoraCount=count;node._apxLoraAdd=add;node._apxLoraPicker=picker;node._apxLoraToggleAll=toggleAll;node._apxLoraScanButton=scan;node._apxTriggerStatus=scanStatus;
+    addbar.append(picker,add,toggleAll);loraBox.append(loraHeading,helper,searchField,list,addbar,scanStatus);root.append(loraBox);
+    node._apxLoraList=list;node._apxLoraCount=count;node._apxLoraAdd=add;node._apxLoraPicker=picker;node._apxLoraSearch=search;node._apxLoraToggleAll=toggleAll;node._apxLoraScanButton=scan;node._apxTriggerStatus=scanStatus;
     renderLoraRows(node);
     root.append(section("04 / Sampling",get(["seed_mode","seed","speed_boost","steps","cfg","sampler_name","scheduler"]),node,{three:true,accent:"red"}));
     const run=document.createElement("section");run.className="apx-section";run.dataset.accent="red";run.innerHTML='<div class="apx-label">05 / Run telemetry</div><div class="apx-status">Ready for generation.</div>';root.append(run);node._apxStatus=run.querySelector(".apx-status");

@@ -2,7 +2,7 @@
 
 ## 2.0.5 — Searchable LoRA pickers
 
-- Adds type-to-search LoRA pickers when adding a LoRA or changing an entry already in the stack.
+- Adds a separate search field that filters the existing LoRA dropdowns for both adding and changing stack entries.
 - Keeps the existing ordered stack, ON/OFF switches, trigger lookup and independent model/CLIP strengths.
 - Does not change model loading, LoRA patching, sampling, image output or saved workflow metadata.
 
