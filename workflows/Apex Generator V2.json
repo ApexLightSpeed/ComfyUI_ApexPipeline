@@ -62,7 +62,7 @@
           "version": "7.8"
         },
         "cnr_id": "apex-pipeline",
-        "ver": "2.0.3"
+        "ver": "2.0.4"
       },
       "color": "#3f3a54",
       "bgcolor": "#2b2640"
@@ -205,13 +205,13 @@
       "title": "APEXLIGHTSPEED · APEX GENERATION NEXUS",
       "properties": {
         "Node name for S&R": "ApexLoraGenerationCore",
+        "cnr_id": "apex-pipeline",
+        "ver": "2.0.4",
         "ue_properties": {
           "widget_ue_connectable": {},
           "input_ue_unconnectable": {},
           "version": "7.8"
-        },
-        "cnr_id": "apex-pipeline",
-        "ver": "2.0.3"
+        }
       },
       "color": "#361318",
       "bgcolor": "#090a0d"
@@ -309,13 +309,13 @@
       "title": "APEXLIGHTSPEED · APEX ARCHIVE",
       "properties": {
         "Node name for S&R": "ApexOutput",
+        "cnr_id": "apex-pipeline",
+        "ver": "2.0.4",
         "ue_properties": {
           "widget_ue_connectable": {},
           "input_ue_unconnectable": {},
           "version": "7.8"
-        },
-        "cnr_id": "apex-pipeline",
-        "ver": "2.0.3"
+        }
       },
       "color": "#361318",
       "bgcolor": "#090a0d"
@@ -345,13 +345,13 @@
       "title": "APEXLIGHTSPEED · APEX IMAGE PREVIEW",
       "properties": {
         "Node name for S&R": "ApexPreview",
+        "cnr_id": "apex-pipeline",
+        "ver": "2.0.4",
         "ue_properties": {
           "widget_ue_connectable": {},
           "input_ue_unconnectable": {},
           "version": "7.8"
-        },
-        "cnr_id": "apex-pipeline",
-        "ver": "2.0.3"
+        }
       },
       "color": "#230b0d",
       "bgcolor": "#080809"
@@ -389,6 +389,14 @@
       2,
       3,
       "STRING"
+    ],
+    [
+      17,
+      2,
+      0,
+      4,
+      0,
+      "IMAGE"
     ],
     [
       4,
@@ -485,14 +493,6 @@
       3,
       11,
       "STRING"
-    ],
-    [
-      17,
-      2,
-      0,
-      4,
-      0,
-      "IMAGE"
     ]
   ],
   "groups": [],

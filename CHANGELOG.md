@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.4 — Automatic Civitai workflow attribution
+
+- Adds the Apex Generator workflow AIR to saved PNG Civitai resource metadata automatically.
+- Hides the manual AIR field in Apex Archive. The separate Embed workflow checkbox remains visible and enabled by default so the ComfyUI graph is still embedded.
+- Keeps files in ComfyUI's normal `output/Apex` folder. Firefox uploaded from the shared folder; Opera GX produced a browser file-access warning.
+- No model loading, LoRA, sampling, decode, image, or save-path behavior changed beyond adding the workflow resource reference.
+
 ## 2.0.3 — Registry identity in the starter workflow
 
 - Adds Comfy Registry package identity and package version metadata to each Apex node in the clean V2 starter. ComfyUI can now associate missing Apex node types with the `apex-pipeline` pack instead of grouping them as “Unknown pack.”

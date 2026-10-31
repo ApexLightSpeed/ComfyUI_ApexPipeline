@@ -28,6 +28,9 @@ from .model_optimizer import ApexModelOptimizer
 
 CATEGORY = "Apex"
 MAXSEED = 0xFFFFFFFFFFFFFFFF
+# Civitai AIR for the Apex Generator workflow listing. This is separate from
+# ComfyUI's embedded graph: Civitai reads it as a linked resource/version.
+APEX_CIVITAI_WORKFLOW_AIR = "urn:air:other:unknown:civitai:3027606@3441098"
 SAMPLERS = list(comfy.samplers.KSampler.SAMPLERS)
 SCHEDULERS = list(comfy.samplers.KSampler.SCHEDULERS)
 MAX_LINES = {"recipe": 9, "generate": 5}
@@ -637,7 +640,9 @@ class ApexOutput:
                 "embed_civitai": ("BOOLEAN", {"default": True}),
                 "hash_resources": ("BOOLEAN", {"default": True}),
                 "negative": ("STRING", {"default": "", "multiline": True}),
-                "civitai_air": ("STRING", {"default": "", "placeholder": "Optional Civitai AIR or URL"}),
+                # Kept in the schema for old workflow compatibility; execution
+                # always uses the Apex workflow resource defined above.
+                "civitai_air": ("STRING", {"default": APEX_CIVITAI_WORKFLOW_AIR, "placeholder": "Apex workflow attribution (automatic)"}),
                 "denoise": ("FLOAT", {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.01}),
             },
             "hidden": {"graph": "PROMPT", "unique_id": "UNIQUE_ID", "extra_pnginfo": "EXTRA_PNGINFO", "execution_list": "EXECUTION_LIST"},
@@ -662,7 +667,7 @@ class ApexOutput:
         metadata, _parameters = metadata_cls().build(
             positive=positive, negative=negative, seed_value=int(seed), steps=int(steps), cfg=float(cfg),
             sampler=str(sampler), scheduler=str(scheduler), width=int(width), height=int(height),
-            models=str(model_name or ""), civitai_air=str(civitai_air or ""), denoise=float(denoise),
+            models=str(model_name or ""), civitai_air=APEX_CIVITAI_WORKFLOW_AIR, denoise=float(denoise),
             extra_params=str(extra_params or ""),
         )
         hash_prompt = _prompt_with_resolved_resources(graph, model_summary)

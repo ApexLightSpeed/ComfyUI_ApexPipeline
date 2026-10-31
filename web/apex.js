@@ -362,7 +362,7 @@ function buildBody(node, type) {
     const run=document.createElement("section");run.className="apx-section";run.dataset.accent="red";run.innerHTML='<div class="apx-label">05 / Run telemetry</div><div class="apx-status">Ready for generation.</div>';root.append(run);node._apxStatus=run.querySelector(".apx-status");
   } else if(type==="ApexOutput"){
     root.append(section("01 / Destination",ws.filter(w=>["folder","filename","format","quality"].includes(w.name)),node,{accent:"cyan",three:true}));
-    root.append(section("02 / Metadata",ws.filter(w=>["negative","civitai_air","denoise"].includes(w.name)),node,{accent:"red",wide:["negative","civitai_air"]}));
+    root.append(section("02 / Metadata",ws.filter(w=>["negative","denoise"].includes(w.name)),node,{accent:"red",wide:["negative"]}));
     root.append(section("03 / PNG + resource data",ws.filter(w=>["embed_workflow","embed_civitai","hash_resources"].includes(w.name)),node,{three:true,accent:"cyan"}));
     const timer=document.createElement("section");timer.className="apx-section";timer.dataset.accent="cyan";
     timer.innerHTML='<div class="apx-label">04 / Run time <span>WHOLE WORKFLOW</span></div><div class="apx-clock-row"><strong class="apx-clock" data-state="idle">--:--</strong><span class="apx-clock-state">NO COMPLETED RUN</span></div>';

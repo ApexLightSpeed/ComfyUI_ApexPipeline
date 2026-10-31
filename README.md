@@ -15,7 +15,7 @@ The workflow uses ComfyUI's normal model, image and widget data. The Apex surfac
 
 ## Missing-node pack warning
 
-The V2.0.3 starter now writes the Comfy Registry package identity (`apex-pipeline`) onto every Apex node. This lets ComfyUI group missing Apex nodes under the correct pack instead of showing `Unknown pack`. If you already downloaded an older workflow copy, download the refreshed JSON below. If ComfyUI does not offer Registry installation yet, install Apex Pipeline from this repository using the steps above; Comfy Registry may still be reviewing the newest version.
+The V2.0.4 starter writes the Comfy Registry package identity (`apex-pipeline`) onto every Apex node. This lets ComfyUI group missing Apex nodes under the correct pack instead of showing `Unknown pack`. If you already downloaded an older workflow copy, download the refreshed JSON below. If ComfyUI does not offer Registry installation yet, install Apex Pipeline from this repository using the steps above; Comfy Registry may still be reviewing the newest version.
 
 ## Install
 
@@ -51,14 +51,14 @@ The starter workflow does not save model filenames or LoRA selections. Choose fi
 1. In **Apex Model Matrix**, choose your Krea 2 model, text encoder and VAE.
 2. Type a prompt in **Apex Generation Nexus**. The starter uses 896 × 1344, batch 1, a random seed, 8 steps, CFG 1, Euler/simple and LC Speed Boost.
 3. Add LoRAs only if you need them. Adjust model and CLIP strengths independently; use **Find triggers** for an optional trigger-word lookup.
-4. Choose the filename, folder, image format and metadata options in **Apex Archive**.
+4. Choose the filename, folder, image format and metadata options in **Apex Archive**. PNGs automatically include the Apex workflow resource reference. The separate **Embed workflow** checkbox remains visible and on by default to embed the ComfyUI graph.
 5. Queue the prompt. The Archive reports the save and shows a small preview; Apex Image Preview shows the same image larger.
 
 ## Notes
 
 - **ComfyUI_LC123_nodes is required.** Apex calls its installed optimizer and save nodes; their source code is not copied into this repository.
 - Pixaroma is not required by the V2 graph.
-- The Apex preview is separate from saving: Archive writes the file, and Image Preview displays the generated image.
+- The Apex preview is separate from saving: Archive writes the file to ComfyUI's normal `output/Apex` folder, and Image Preview displays the generated image. Firefox uploaded from that shared folder during validation; Opera GX showed a local file-access warning.
 - Find triggers runs only when you press its button. Its public lookup sends a file hash and LoRA name to Civitai, never the LoRA weights.
 - If something fails, include your ComfyUI version and the complete console traceback in a GitHub issue. Do not include API keys or access tokens.
 
