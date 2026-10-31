@@ -22,6 +22,8 @@ model["outputs"][3]["links"] = [15]
 def props(node_type):
     return {
         "Node name for S&R": node_type,
+        "cnr_id": "apex-pipeline",
+        "ver": "2.0.3",
         "ue_properties": {"widget_ue_connectable": {}, "input_ue_unconnectable": {}, "version": "7.8"},
     }
 
