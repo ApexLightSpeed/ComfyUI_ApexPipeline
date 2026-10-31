@@ -490,9 +490,36 @@ class ApexGenerationCore(ApexGenerate):
         return schema
 
     @classmethod
-    def IS_CHANGED(cls, seed_mode="random", seed=0, **kwargs):
-        # Random mode must execute for every queue, even when no visible widget changed.
-        return float("nan") if seed_mode == "random" else int(seed)
+    def IS_CHANGED(cls, seed_mode="random", seed=0, lora_stack="[]", **kwargs):
+        # Random mode must execute for every queue. Fixed-seed runs also include
+        # the editable LoRA stack and selected file revisions in their fingerprint,
+        # so adding/toggling/changing a LoRA can never reuse a stale generation.
+        if seed_mode == "random":
+            return float("nan")
+        try:
+            rows = json.loads(lora_stack or "[]")
+        except (TypeError, ValueError):
+            rows = []
+        available = folder_paths.get_filename_list("loras")
+        revisions = []
+        for row in rows if isinstance(rows, list) else []:
+            if not isinstance(row, dict) or row.get("on", True) is False:
+                continue
+            name = str(row.get("name") or "").strip()
+            if not name or name == "(none)":
+                continue
+            hit = core.match_lora(name, available)
+            if not hit:
+                revisions.append((name, "missing"))
+                continue
+            path = folder_paths.get_full_path("loras", hit)
+            try:
+                stat = os.stat(path)
+                revisions.append((hit, stat.st_size, stat.st_mtime_ns,
+                                  float(row.get("sm", 1.0)), float(row.get("sc", 1.0))))
+            except OSError:
+                revisions.append((hit, "unavailable"))
+        return (int(seed), str(lora_stack or "[]"), tuple(revisions))
 
     def run(self, model, clip, vae, prompt, seed_mode, seed, width, height,
             batch_size, speed_boost, steps, cfg, sampler_name, scheduler,

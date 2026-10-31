@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.2 — LoRA stack reliability and control polish
+
+- Fixes fixed-seed cache identity so adding, enabling, disabling, reordering, or changing LoRA strengths invalidates stale generation output; enabled file size and modification changes also refresh the LoRA patch.
+- Replaces each LoRA checkbox with an accessible, keyboard-focusable ON/OFF switch and clearer active/bypassed state.
+- Shows the number of active LoRAs and explains that changes apply on the next queued generation.
+- Keeps the existing ordered stack, independent model/CLIP strengths, trigger lookup, sampler, and model patch implementation.
+
 ## 2.0.1 — V2 release correction
 
 - Reissues the current V2 package as a fresh Registry version so ComfyUI users can update to the intended frontend and starter workflow.
