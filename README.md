@@ -59,3 +59,7 @@ You can pick other compatible files in Apex Model Matrix. The supplied workflow 
 ## License
 
 Apex Pipeline is MIT licensed; see [LICENSE](LICENSE). LC123 and the model files retain their own licenses. This repository does not redistribute their code or model weights.
+
+## Publishing a Registry version
+
+The Registry package is `apex-pipeline` under publisher `apexlightspeed`. To publish, create a Registry personal access token, add it to this GitHub repository as the Actions secret `REGISTRY_ACCESS_TOKEN`, then run **Actions → Publish to Comfy Registry**. The action reads the version from `pyproject.toml`; published versions cannot be overwritten, so increase that version for each release.
