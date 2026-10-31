@@ -84,26 +84,56 @@ function writeLoraRows(node,rows){
   const count=node._apxLoraCount;if(count){const active=rows.filter(r=>r.on!==false&&r.name&&r.name!=="(none)").length;count.textContent=`${active} active · ${rows.length} / ${MAX_LORA_ROWS}`;}
   if(node._apxLoraAdd)node._apxLoraAdd.disabled=rows.length>=MAX_LORA_ROWS||node._apxLoraPicker?.value==="(none)";
 }
-function fillLoraCombo(select,values,current,query=""){
-  const options=Array.isArray(values)?values:["(none)"];
-  const all=[...new Set(options.filter(v=>v!=="(none)").map(String))].sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:"base"}));
-  const q=String(query||"").trim().toLowerCase();
-  const matches=all.filter(name=>!q||name.toLowerCase().includes(q));
-  if(current&&current!=="(none)"&&!matches.includes(String(current)))matches.unshift(String(current));
+const FOLDER_OPTION_PREFIX="__APX_FOLDER__:";
+function cleanRelativePath(value){return String(value||"").replaceAll("\\","/").replace(/^\/+|\/+$/g,"");}
+function folderOption(path){return FOLDER_OPTION_PREFIX+encodeURIComponent(path);}
+function folderOptionPath(value){return value.startsWith(FOLDER_OPTION_PREFIX)?decodeURIComponent(value.slice(FOLDER_OPTION_PREFIX.length)):null;}
+function fillFolderCombo(select,values,current,query="",browsePath="",emptyLabel="No matching files"){
+  const all=[...new Set((Array.isArray(values)?values:[]).map(String))].sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:"base"}));
+  const q=String(query||"").trim().toLocaleLowerCase();
+  const sentinels=all.filter(name=>["(none)","none","from checkpoint"].includes(name.toLocaleLowerCase()));
+  const noneValue=sentinels.find(v=>v.toLocaleLowerCase()==="(none)")||sentinels.find(v=>v.toLocaleLowerCase()==="none")||"(none)";
+  const files=all.filter(name=>!sentinels.includes(name)&&!name.startsWith("(no compatible files"));
+  const currentPath=cleanRelativePath(current);
+  const path=cleanRelativePath(browsePath);
+  const prefix=path?path+"/":"";
+  const currentIsSentinel=sentinels.includes(String(current));
+  const currentInView=files.some(name=>{const clean=cleanRelativePath(name);return clean===currentPath&&(!q?(clean.startsWith(prefix)&&!clean.slice(prefix.length).includes("/")):clean.toLocaleLowerCase().includes(q));});
   select.replaceChildren();
-  const none=document.createElement("option");none.value="(none)";none.textContent="(none)";select.append(none);
-  if(!matches.length){const empty=document.createElement("option");empty.disabled=true;empty.value="";empty.textContent="No matching LoRAs";select.append(empty);}
-  matches.forEach(name=>{const option=document.createElement("option");option.value=name;option.textContent=name;select.append(option)});
-  select.value=current&&[...select.options].some(option=>option.value===String(current))?String(current):"(none)";
+  const none=document.createElement("option");none.value=noneValue;none.textContent="None";select.append(none);
+  if(q){
+    const crumb=document.createElement("option");crumb.disabled=true;crumb.textContent=`🔎 Matches in all folders · ${q}`;select.append(crumb);
+    const matches=files.filter(name=>cleanRelativePath(name).toLocaleLowerCase().includes(q));
+    if(current&&!currentIsSentinel&&!currentInView&&!matches.includes(String(current))){const selected=document.createElement("option");selected.value=String(current);selected.textContent=`Current · ${cleanRelativePath(current)}`;select.append(selected);}
+    for(const name of matches){const option=document.createElement("option");option.value=name;option.textContent=cleanRelativePath(name);option.title=cleanRelativePath(name);select.append(option);}
+    if(!matches.length){const empty=document.createElement("option");empty.disabled=true;empty.textContent=emptyLabel;select.append(empty);}
+  }else{
+    const crumb=document.createElement("option");crumb.disabled=true;crumb.textContent=path?`📂 ${path}`:"📂 All folders";select.append(crumb);
+    if(path){const parent=path.includes("/")?path.slice(0,path.lastIndexOf("/")):"";const up=document.createElement("option");up.value=folderOption(parent);up.textContent="📁 ..  Parent folder";select.append(up);}
+    const childFolders=new Set(),directFiles=[];
+    for(const name of files){const relative=cleanRelativePath(name);if(!relative.startsWith(prefix))continue;const rest=relative.slice(prefix.length);if(!rest)continue;const slash=rest.indexOf("/");if(slash<0)directFiles.push(name);else childFolders.add(rest.slice(0,slash));}
+    if(current&&!currentIsSentinel&&!currentInView){const selected=document.createElement("option");selected.value=String(current);selected.textContent=`Current · ${currentPath}`;selected.title=currentPath;select.append(selected);}
+    for(const folder of [...childFolders].sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:"base"}))){const target=path?`${path}/${folder}`:folder;const option=document.createElement("option");option.value=folderOption(target);option.textContent=`📁 ${folder}`;option.title=`Open ${target}`;select.append(option);}
+    for(const name of directFiles.sort((a,b)=>cleanRelativePath(a).localeCompare(cleanRelativePath(b),undefined,{sensitivity:"base"}))){const clean=cleanRelativePath(name);const option=document.createElement("option");option.value=name;option.textContent=clean.slice(clean.lastIndexOf("/")+1);option.title=clean;select.append(option);}
+    if(!childFolders.size&&!directFiles.length){const placeholder=all.find(name=>name.startsWith("(no compatible files"));const empty=document.createElement("option");empty.disabled=true;empty.textContent=placeholder||emptyLabel;select.append(empty);}
+  }
+  select.value=current&&[...select.options].some(option=>option.value===String(current))?String(current):noneValue;
   return select;
 }
-function loraCombo(values,current,query=""){
+function fillLoraCombo(select,values,current,query="",browsePath=""){
+  return fillFolderCombo(select,Array.isArray(values)?values:["(none)"],current,query,browsePath,"No matching LoRAs");
+}
+function loraCombo(values,current,query="",browsePath=""){
   const select=document.createElement("select");select.className="apx-input";
-  return fillLoraCombo(select,values,current,query);
+  return fillLoraCombo(select,values,current,query,browsePath);
 }
 function loraField(labelText,input){
   const field=document.createElement("div");field.className="apx-field";
   const label=document.createElement("label");label.textContent=labelText;field.append(label,input);return field;
+}
+function syncLoraBrowseHint(node){
+  const hint=node._apxLoraBrowseHint;if(!hint)return;
+  hint.textContent=node._apxLoraFilter?"🔎 Search results include every LoRA subfolder.":`📂 ${node._apxLoraBrowsePath||"All folders"}`;
 }
 function strengthControl(node,rows,row,key,labelText){
   const field=document.createElement("div");field.className="apx-field";
@@ -161,7 +191,7 @@ function renderLoraRows(node,rows=readLoraRows(node)){
     const enabled=document.createElement("button");enabled.type="button";enabled.className="apx-lora-switch";enabled.setAttribute("role","switch");
     const syncEnabled=()=>{const active=row.on!==false;enabled.setAttribute("aria-checked",String(active));enabled.textContent=active?"ON":"OFF";enabled.title=active?"LoRA is active for the next queued run":"LoRA is bypassed";enabled.setAttribute("aria-label",(active?"Bypass ":"Apply ")+(row.name||"selected LoRA"));item.dataset.off=String(!active)};
     syncEnabled();enabled.addEventListener("click",()=>{row.on=row.on===false;syncEnabled();writeLoraRows(node,rows)});
-    const select=loraCombo(values,row.name||"(none)",node._apxLoraFilter||"");select.setAttribute("aria-label","Select LoRA file");select.title="Choose a LoRA from the filtered local list";select.addEventListener("change",()=>{row.name=select.value==="(none)"?"":select.value;syncEnabled();writeLoraRows(node,rows)});
+    const select=loraCombo(values,row.name||"(none)",node._apxLoraFilter||"",node._apxLoraBrowsePath||"");select.setAttribute("aria-label","Select LoRA file");select.title="Browse LoRA folders or search every local LoRA";select.addEventListener("change",()=>{const folder=folderOptionPath(select.value);if(folder!==null){node._apxLoraBrowsePath=folder;syncLoraBrowseHint(node);if(node._apxLoraPicker)fillLoraCombo(node._apxLoraPicker,values,"(none)",node._apxLoraFilter||"",folder);renderLoraRows(node,rows);return;}row.name=select.value==="(none)"?"":select.value;syncEnabled();writeLoraRows(node,rows)});
     const button=(label,title,fn,disabled=false)=>{const b=document.createElement("button");b.type="button";b.className="apx-mini-button";b.textContent=label;b.title=title;b.disabled=disabled;b.addEventListener("click",fn);return b;};
     top.append(enabled,select,
       button("↑","Move up",()=>{if(index>0){[rows[index-1],rows[index]]=[rows[index],rows[index-1]];writeLoraRows(node,rows);renderLoraRows(node,rows)}},index===0),
@@ -296,17 +326,22 @@ function buildResolutionPanel(node,batchWidget){
   writeResolutionState(node,state,state.w,state.h);
   return box;
 }
-function makeControl(node, widget, wide=false) {
+function makeControl(node, widget, wide=false, filter="", folderAware=false) {
   const field = document.createElement("div"); field.className = `apx-field${wide ? " wide" : ""}`;
   const label = document.createElement("label"); label.textContent = widget.name.replaceAll("_", " ");
   const id = `apx-${node.id}-${slug(widget.name)}`; label.htmlFor=id; field.append(label);
   let input;
+  let folderHint=null;
   const values = widget.options?.values;
   if (Array.isArray(values) && values.length) {
     input=document.createElement("select"); input.className="apx-input";
-    values.forEach(v=>{const o=document.createElement("option");o.value=String(v);o.textContent=String(v);input.append(o)});
+    const browse=node._apxModelBrowse||(node._apxModelBrowse={});
+    const fill=()=>{fillFolderCombo(input,values,String(widget.value ?? values[0]),filter,browse[widget.name]||"");if(folderHint)folderHint.textContent=`📂 ${browse[widget.name]||"All folders"}${filter?" · search covers all folders":""}`;};
+    if(folderAware)fill();
+    else values.forEach(v=>{const o=document.createElement("option");o.value=String(v);o.textContent=String(v);input.append(o)});
     input.value=String(widget.value ?? values[0]);
-    input.addEventListener("change",()=>setValue(node,widget,input.value));
+    if(folderAware){folderHint=document.createElement("div");folderHint.className="apx-hint";folderHint.textContent=`📂 ${browse[widget.name]||"All folders"}${filter?" · search covers all folders":""}`;input.title="Choose a folder to browse into, or search across all installed files.";input.addEventListener("focus",fill);}
+    input.addEventListener("change",()=>{if(folderAware){const folder=folderOptionPath(input.value);if(folder!==null){browse[widget.name]=folder;fill();return;}}setValue(node,widget,input.value)});
   } else if (typeof widget.value === "boolean" || widget.type === "toggle") {
     input=document.createElement("input"); input.type="checkbox"; input.checked=!!widget.value;
     const wrap=document.createElement("div");wrap.className="apx-toggle";wrap.append(input,document.createTextNode("enabled"));
@@ -322,15 +357,17 @@ function makeControl(node, widget, wide=false) {
     if(!multiline)input.type="text"; input.value=String(widget.value??"");
     input.addEventListener("input",()=>setValue(node,widget,input.value));
   }
-  input.id=id;input._apxWidget=widget;widget._apxInput=input;field.append(input); return field;
+  input.id=id;input._apxWidget=widget;widget._apxInput=input;field.append(input);if(folderHint)field.append(folderHint);return field;
 }
 function section(title, widgets, node, opts={}) {
   const box=document.createElement("section");box.className="apx-section";box.dataset.accent=opts.accent||"red";
   const heading=document.createElement("div");heading.className="apx-label";heading.textContent=title;
   if(opts.meta){const m=document.createElement("span");m.textContent=opts.meta;heading.append(m)}
   box.append(heading);
+  let filter="";
+  if(opts.folderSearch){const search=document.createElement("input");search.type="search";search.className="apx-input";search.placeholder="Search installed files and subfolders…";search.setAttribute("aria-label","Search installed model files and subfolders");search.value=String(node._apxModelFilter||"");search.addEventListener("input",()=>{node._apxModelFilter=search.value;grid.replaceChildren();widgets.forEach(w=>grid.append(makeControl(node,w,opts.wide?.includes(w.name),search.value,["model_file","text_encoder","vae"].includes(w.name))))});box.append(search);filter=search.value;}
   const grid=document.createElement("div");grid.className=`apx-grid${opts.three?" three":""}`;
-  widgets.forEach(w=>grid.append(makeControl(node,w,opts.wide?.includes(w.name))));box.append(grid);return box;
+  widgets.forEach(w=>grid.append(makeControl(node,w,opts.wide?.includes(w.name),filter,opts.folderSearch&&["model_file","text_encoder","vae"].includes(w.name))));box.append(grid);return box;
 }
 function head(info) {
   const d=document.createElement("header");d.className="apx-head";
@@ -355,19 +392,20 @@ function buildBody(node, type) {
     const helper=document.createElement("div");helper.className="apx-lora-helper";helper.textContent="Search local LoRA filenames, then choose from the dropdown. The list filters for adding and changing entries; enabled LoRAs apply on the next queued run.";
     const search=document.createElement("input");search.type="search";search.className="apx-input";search.placeholder="Search local LoRA files…";search.setAttribute("aria-label","Search local LoRA files");search.value=String(node._apxLoraFilter||"");
     const searchField=loraField("SEARCH LOCAL LORAS",search);
+    const browseHint=document.createElement("div");browseHint.className="apx-hint";node._apxLoraBrowseHint=browseHint;syncLoraBrowseHint(node);
     const list=document.createElement("div");list.className="apx-lora-list";
     const catalog=loraWidget(node,"lora_catalog");const values=catalog?.options?.values||["(none)"];
     const addbar=document.createElement("div");addbar.className="apx-lora-addbar";
-    const picker=loraCombo(values,"(none)",search.value);
+    const picker=loraCombo(values,"(none)",search.value,node._apxLoraBrowsePath||"");
     const add=document.createElement("button");add.type="button";add.className="apx-add-button";add.textContent="Add LoRA";add.disabled=true;add.title="Search for and choose a LoRA first.";
     const syncAdd=()=>{add.disabled=picker.value==="(none)"||readLoraRows(node).length>=MAX_LORA_ROWS;add.title=add.disabled?"Search for and choose a LoRA first.":"Add the selected LoRA to the stack."};
-    picker.addEventListener("change",syncAdd);
-    search.addEventListener("input",()=>{node._apxLoraFilter=search.value;fillLoraCombo(picker,values,"(none)",search.value);syncAdd();renderLoraRows(node)});
+    picker.addEventListener("change",()=>{const folder=folderOptionPath(picker.value);if(folder!==null){node._apxLoraBrowsePath=folder;syncLoraBrowseHint(node);fillLoraCombo(picker,values,"(none)",search.value,folder);syncAdd();renderLoraRows(node);return;}syncAdd()});
+    search.addEventListener("input",()=>{node._apxLoraFilter=search.value;syncLoraBrowseHint(node);fillLoraCombo(picker,values,"(none)",search.value,node._apxLoraBrowsePath||"");syncAdd();renderLoraRows(node)});
     add.addEventListener("click",()=>{const rows=readLoraRows(node);if(rows.length>=MAX_LORA_ROWS||picker.value==="(none)")return;rows.push({name:picker.value,on:true,sm:1,sc:1,trigger:""});writeLoraRows(node,rows);renderLoraRows(node,rows)});
     const toggleAll=document.createElement("button");toggleAll.type="button";toggleAll.className="apx-add-button";toggleAll.textContent="Enable all";toggleAll.disabled=true;toggleAll.title="Enable or disable every LoRA in the stack.";
     toggleAll.addEventListener("click",()=>{const rows=readLoraRows(node);const turnOn=rows.some(r=>!r.on);rows.forEach(r=>r.on=turnOn);writeLoraRows(node,rows);renderLoraRows(node,rows)});
     const scanStatus=document.createElement("div");scanStatus.className="apx-trigger-status";scanStatus.setAttribute("aria-live","polite");
-    addbar.append(picker,add,toggleAll);loraBox.append(loraHeading,helper,searchField,list,addbar,scanStatus);root.append(loraBox);
+    addbar.append(picker,add,toggleAll);loraBox.append(loraHeading,helper,searchField,browseHint,list,addbar,scanStatus);root.append(loraBox);
     node._apxLoraList=list;node._apxLoraCount=count;node._apxLoraAdd=add;node._apxLoraPicker=picker;node._apxLoraSearch=search;node._apxLoraToggleAll=toggleAll;node._apxLoraScanButton=scan;node._apxTriggerStatus=scanStatus;
     renderLoraRows(node);
     root.append(section("04 / Sampling",get(["seed_mode","seed","speed_boost","steps","cfg","sampler_name","scheduler"]),node,{three:true,accent:"red"}));
@@ -404,7 +442,7 @@ function buildBody(node, type) {
     for(const [title,names,accent] of groups){
       const fields=names.map(n=>ws.find(w=>w.name===n)).filter(Boolean);
       fields.forEach(w=>used.add(w.name));
-      if(fields.length)root.append(section(title,fields,node,{three:fields.length>=3,accent}));
+      if(fields.length)root.append(section(title,fields,node,{three:fields.length>=3,accent,folderSearch:title==="02 / Model components"}));
     }
     const remainder=ws.filter(w=>!used.has(w.name));
     if(remainder.length)root.append(section("04 / Additional controls",remainder,node,{three:remainder.length>=3,accent:"red"}));

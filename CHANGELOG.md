@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.7 — Local model search and folder browsing
+
+- Model, text encoder, VAE and LoRA selectors now browse installed subfolders and search across local filenames and relative paths.
+- Fixes the missing model-selector UI wiring that kept folder search and navigation from appearing.
+- Keeps the familiar LoRA dropdown: search filters results, choose one, then add or replace it in the stack.
+- Removes reliance on LC123 recommended/download entries for model selection; queue validation still rejects missing or invalid local selections.
+- Updates the workflow builder to refresh the shipped clean starter instead of a prototype JSON that is excluded from releases.
+- No model execution, LoRA application, sampling, decode or save math changes.
+
 ## 2.0.6 — LoRA search and dropdowns
 
 - Keeps the local filename search field and restores native dropdowns for selecting LoRAs to add or edit.

@@ -10,9 +10,9 @@ MODULE_PATH = pathlib.Path(__file__).parents[1] / "model_optimizer.py"
 def load_module(monkeypatch, *, lc_enabled=True):
     fake_paths = types.ModuleType("folder_paths")
     categories = {
-        "diffusion_models": ["Lustify.safetensors", "subfolder/Other.safetensors"],
-        "text_encoders": ["Qwen3VL.safetensors"],
-        "vae": ["qwen_image_vae.safetensors"],
+        "diffusion_models": ["Lustify.safetensors", "subfolder/Other.safetensors", r"windows\Group\Network.safetensors"],
+        "text_encoders": ["Qwen3VL.safetensors", "encoders/krea/Qwen3VL.safetensors"],
+        "vae": ["qwen_image_vae.safetensors", "krea/qwen_image_vae.safetensors"],
         "unet_gguf": ["model.gguf"],
     }
     fake_paths.folder_names_and_paths = {key: [] for key in categories}
@@ -32,7 +32,7 @@ def load_module(monkeypatch, *, lc_enabled=True):
             @classmethod
             def INPUT_TYPES(cls):
                 local = [name for _, name in engine.local_files("model")]
-                return {"required": {"base_model": (["Krea 2 (Turbo)"], {}), "goal": (["Optimal"], {}), "model_file": (local, {})}, "optional": {"spectrum": (["auto", "on", "off"], {"default": "auto"})}}
+                return {"required": {"base_model": (["Krea 2 (Turbo)"], {}), "goal": (["Optimal"], {}), "model_file": (local, {}), "text_encoder": (local, {}), "vae": (local, {})}, "optional": {"spectrum": (["auto", "on", "off"], {"default": "auto"})}}
             @classmethod
             def IS_CHANGED(cls, **kwargs):
                 return "lc-change-token"
@@ -53,7 +53,15 @@ def test_lc_schema_uses_safe_comfy_lists_and_restores_engine(monkeypatch):
     engine = sys.modules["fake_lc_node"].E
     original = engine._list
     schema = module.ApexModelOptimizer.INPUT_TYPES()
-    assert schema["required"]["model_file"][0] == ["Lustify.safetensors", "subfolder/Other.safetensors", "model.gguf"]
+    assert schema["required"]["model_file"][0] == ["None", "Lustify.safetensors", "model.gguf", "subfolder/Other.safetensors", r"windows\Group\Network.safetensors"]
+    assert schema["required"]["model_file"][1]["default"] == "None"
+    assert r"windows\Group\Network.safetensors" in schema["required"]["model_file"][0]
+    assert "★ Recommended" not in schema["required"]["model_file"][0]
+    assert not any(str(value).startswith("⬇ Download:") for value in schema["required"]["model_file"][0])
+    assert schema["required"]["text_encoder"][0] == ["None", "encoders/krea/Qwen3VL.safetensors", "Qwen3VL.safetensors"]
+    assert schema["required"]["vae"][0] == ["None", "krea/qwen_image_vae.safetensors", "qwen_image_vae.safetensors"]
+    assert "From checkpoint" not in schema["required"]["text_encoder"][0]
+    assert "From checkpoint" not in schema["required"]["vae"][0]
     assert schema["optional"]["spectrum"][1]["default"] == "off"
     assert engine._list is original
 
@@ -61,9 +69,34 @@ def test_lc_schema_uses_safe_comfy_lists_and_restores_engine(monkeypatch):
 def test_lc_run_preserves_engine_execution_and_safe_listing(monkeypatch):
     module, _, _ = load_module(monkeypatch)
     result = module.ApexModelOptimizer().run("Krea 2 (Turbo)", "Optimal", model_file="Lustify.safetensors", text_encoder="Qwen3VL.safetensors", vae="qwen_image_vae.safetensors", speed_ups="Auto")
-    assert result["result"] == ("MODEL", "CLIP", "VAE", "SUMMARY:Lustify.safetensors,subfolder/Other.safetensors,model.gguf")
+    summary = r"SUMMARY:Lustify.safetensors,subfolder/Other.safetensors,windows\Group\Network.safetensors,model.gguf"
+    assert result["result"] == ("MODEL", "CLIP", "VAE", summary)
     assert result["ui"]["lc_optimizer"] == ["preserved"]
-    assert result["ui"]["apex_status"] == ["SUMMARY:Lustify.safetensors,subfolder/Other.safetensors,model.gguf"]
+    assert result["ui"]["apex_status"] == [summary]
+
+
+def test_lc_recommended_and_download_choices_are_rejected(monkeypatch):
+    module, _, _ = load_module(monkeypatch)
+    valid = {"model_file": "Lustify.safetensors", "text_encoder": "Qwen3VL.safetensors", "vae": "qwen_image_vae.safetensors"}
+    for widget in valid:
+        for value in ("None", "★ Recommended", "⬇ Download: Lustify.safetensors", "missing/model.safetensors"):
+            selected = dict(valid)
+            selected[widget] = value
+            try:
+                module.ApexModelOptimizer().run("Krea 2 (Turbo)", "Optimal", **selected)
+            except (ValueError, FileNotFoundError):
+                pass
+            else:
+                raise AssertionError(f"unsafe {widget} choice was accepted: {value}")
+    try:
+        module.ApexModelOptimizer().run(
+            "Krea 2 (Turbo)", "Optimal", model_file="Lustify.safetensors",
+            text_encoder="From checkpoint", vae="qwen_image_vae.safetensors",
+        )
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("From checkpoint should not be accepted by the Krea 2 split-file workflow")
 
 
 def test_native_fallback_schema_and_loader(monkeypatch):
@@ -97,4 +130,4 @@ def test_memory_error_becomes_empty_category_not_schema_crash(monkeypatch):
         raise MemoryError("simulated oversized model list")
     fake_paths.get_filename_list = fail
     schema = module.ApexModelOptimizer.INPUT_TYPES()
-    assert schema["required"]["model_file"][0] == [module._EMPTY]
+    assert schema["required"]["model_file"][0] == ["None", module._EMPTY]

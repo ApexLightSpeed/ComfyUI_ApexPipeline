@@ -1,10 +1,9 @@
 """Apex-owned Krea 2 model optimizer with a safe, native ComfyUI picker.
 
-When LC123 is installed, this node delegates its mature model-selection,
-recommendation and hardware-optimization execution to LC123's LCOptimizer
-engine, but replaces the engine's unbounded local-file scan with ComfyUI's
-registered, cached folder lists. The Apex node uses ordinary Combox widgets;
-it does not call LC123's custom /choices endpoint or render its custom picker.
+When LC123 is installed, this node delegates model loading and hardware
+optimization to LC123's LCOptimizer engine, but replaces its recommendation
+and download pickers with ComfyUI-registered local files. The Apex node uses
+ordinary ComfyUI widgets and does not call LC123's custom picker endpoint.
 
 Without LC123, the node remains usable as a straightforward native Krea 2
 loader. This module does not patch LC123 permanently: the safe list function is
@@ -16,7 +15,6 @@ import inspect
 import logging
 import threading
 from contextlib import contextmanager
-from typing import Iterable
 
 import folder_paths
 import nodes as comfy_nodes
@@ -36,6 +34,18 @@ _SAFE_CATEGORIES = {
     "unet_gguf", "clip_gguf",
 }
 _GGUF_CATEGORY = {"diffusion_models": "unet_gguf", "text_encoders": "clip_gguf"}
+_ROLE_CATEGORIES = {
+    # This node's native fallback uses UNETLoader; checkpoint entries would
+    # appear selectable but cannot be loaded through that path.
+    "model_file": ("diffusion_models",),
+    "text_encoder": ("text_encoders",),
+    "vae": ("vae",),
+}
+_ROLE_EXTENSIONS = {
+    "model_file": _MODEL_EXTENSIONS,
+    "text_encoder": _TEXT_EXTENSIONS,
+    "vae": _VAE_EXTENSIONS,
+}
 
 
 def _safe_folder_list(category: str) -> list[str]:
@@ -104,18 +114,84 @@ def _safe_lc_scan(engine):
             engine._list = original
 
 
-def _native_files(category: str, extensions: Iterable[str]) -> list[str]:
-    values = _safe_folder_list(category)
-    allowed = tuple(ext.lower() for ext in extensions)
-    try:
-        found = sorted(
-            (v for v in values if isinstance(v, str) and v.lower().endswith(allowed)),
-            key=str.casefold,
-        )
-    except MemoryError:
-        _LOG.exception("[Apex Model Optimizer] MemoryError filtering '%s'.", category)
-        return [_EMPTY]
-    return found or [_EMPTY]
+def _local_role_files(widget: str) -> list[str]:
+    """List installed relative paths only; ComfyUI's cache already includes subfolders."""
+    allowed = tuple(ext.lower() for ext in _ROLE_EXTENSIONS[widget])
+    found = []
+    seen = set()
+    for category in _ROLE_CATEGORIES[widget]:
+        values = _safe_lc_list(category) if category in _GGUF_CATEGORY else _safe_folder_list(category)
+        try:
+            for value in values:
+                if not isinstance(value, str) or not value.lower().endswith(allowed):
+                    continue
+                key = value.casefold()
+                if key not in seen:
+                    seen.add(key)
+                    # Preserve ComfyUI's exact relative path token. LC123's
+                    # resolver checks membership against its original listing,
+                    # whose separator may be platform-specific.
+                    found.append(value)
+        except MemoryError:
+            _LOG.exception("[Apex Model Optimizer] MemoryError filtering installed '%s' files.", widget)
+            return []
+    return sorted(found, key=str.casefold)
+
+
+def _local_file_choices(widget: str, *, engine=None):
+    """Build an explicit local-only widget list, never an LC recommendation/download list."""
+    none = getattr(engine, "NONE", "None") if engine else "None"
+    choices = [none]
+    local_files = _local_role_files(widget)
+    choices.extend(local_files or [_EMPTY])
+    tooltip = "Choose an installed local file. Subfolders are included; automatic recommendations and downloads are disabled."
+    options = {"default": none, "tooltip": tooltip}
+    return choices, options
+
+
+def _replace_lc_file_choices(schema, engine):
+    """Keep LC optimizer controls and execution, replacing only file pickers."""
+    schema = dict(schema)
+    required = dict(schema.get("required", {}))
+    for widget in _ROLE_CATEGORIES:
+        old = required.get(widget)
+        if old is None:
+            continue
+        choices, options = _local_file_choices(widget, engine=engine)
+        if isinstance(old, tuple) and len(old) >= 3:
+            required[widget] = (choices, options, *old[2:])
+        else:
+            required[widget] = (choices, options)
+    schema["required"] = required
+    return schema
+
+
+def _validate_local_selections(engine, values):
+    """Reject stale/download tokens before LC's resolver can fall back to a download."""
+    recommended = getattr(engine, "RECOMMENDED", "★ Recommended")
+    download = getattr(engine, "DOWNLOAD", "⬇ Download: ")
+    none = getattr(engine, "NONE", "None")
+    for widget in _ROLE_CATEGORIES:
+        value = values.get(widget)
+        if value in (none, None, ""):
+            raise ValueError(
+                f"Apex Model Optimizer: choose an installed local {widget.replace('_', ' ')} file. "
+                "This Krea 2 workflow uses separate model, text encoder, and VAE files."
+            )
+        if value == getattr(engine, "FROM_CKPT", "From checkpoint"):
+            raise ValueError(
+                "Apex Model Optimizer: 'From checkpoint' is not available in the Krea 2 local-file workflow. "
+                "Select installed model, text encoder, and VAE files."
+            )
+        if value == recommended or (isinstance(value, str) and value.startswith(download)):
+            raise ValueError(
+                f"Apex Model Optimizer: '{value}' is no longer used. Choose an installed local file from the folder-aware dropdown."
+            )
+        if not isinstance(value, str) or value not in _local_role_files(widget):
+            raise FileNotFoundError(
+                f"Apex Model Optimizer: {widget.replace('_', ' ')} '{value}' is not installed locally. "
+                "Choose a current local file; Apex does not download models automatically."
+            )
 
 
 def _native_input_types():
@@ -133,9 +209,9 @@ def _native_input_types():
             "base_model": (["Krea 2 (Turbo)", "Krea 2 (Raw)", "Custom"],
                            {"default": "Krea 2 (Turbo)"}),
             "goal": (["Quality", "Optimal", "Fast"], {"default": "Optimal", "tooltip": "Requires LC123 for report-based goals; ignored by the native fallback."}),
-            "model_file": (_native_files("diffusion_models", _MODEL_EXTENSIONS), {}),
-            "text_encoder": (_native_files("text_encoders", _TEXT_EXTENSIONS), {}),
-            "vae": (_native_files("vae", _VAE_EXTENSIONS), {}),
+            "model_file": _local_file_choices("model_file"),
+            "text_encoder": _local_file_choices("text_encoder"),
+            "vae": _local_file_choices("vae"),
             "speed_ups": (["Auto", "Manual"], {"default": "Auto", "tooltip": "Requires LC123 for hardware-aware Auto/Manual optimization; ignored by the native fallback."}),
             "attention": (["auto", "sdpa"], {"default": "auto", "tooltip": "Requires LC123; ignored by the native fallback."}),
             "fp16_accumulation": (["auto", "on", "off"], {"default": "auto", "tooltip": "Requires LC123; ignored by the native fallback."}),
@@ -198,9 +274,9 @@ class ApexModelOptimizer:
     FUNCTION = "run"
     CATEGORY = "Apex/Loaders"
     DESCRIPTION = (
-        "Apex-owned Krea 2 loader with standard ComfyUI dropdowns. When LC123 is "
-        "installed, preserves its Optimal/Quality/Fast recommendations and hardware-aware "
-        "optimization options, while bypassing its custom recursive file-picker scan."
+        "Apex-owned model selectors list installed local files and subfolders only. "
+        "LC123's loader and hardware optimizations remain available, but recommendations "
+        "and automatic downloads are disabled."
     )
 
     @classmethod
@@ -210,6 +286,7 @@ class ApexModelOptimizer:
             try:
                 with _safe_lc_scan(engine):
                     schema = lc_cls.INPUT_TYPES()
+                schema = _replace_lc_file_choices(schema, engine)
                 # Spectrum is optional in LC123's optimizer. It can cause
                 # compatibility/runtime failures on some Krea 2 setups, so
                 # Apex defaults it to off while preserving the user control.
@@ -258,6 +335,11 @@ class ApexModelOptimizer:
         lc_cls, engine = _get_lc_optimizer()
         if lc_cls is not None and engine is not None:
             try:
+                _validate_local_selections(engine, {
+                    "model_file": model_file,
+                    "text_encoder": text_encoder,
+                    "vae": vae,
+                })
                 with _safe_lc_scan(engine):
                     instance = lc_cls()
                     result = instance.run(base_model, goal, model_file=model_file,

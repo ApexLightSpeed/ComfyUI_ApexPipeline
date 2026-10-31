@@ -39,7 +39,7 @@ def test_v2_workflow_id_is_unique_from_legacy_templates():
     data = load_workflow()
     template_ids = {
         json.loads((ROOT / "workflows" / name).read_text(encoding="utf-8"))["id"]
-        for name in ("Apex Generator V1.json", "Apex Generator V2 Prototype.json")
+        for name in ("Apex Generator V1.json",)
     }
     assert data["id"] not in template_ids
 
@@ -66,6 +66,16 @@ def test_v2_frontend_surface_is_scoped_away_from_legacy_workflows():
     }
 
 
+def test_model_and_lora_selectors_wire_search_and_folder_navigation():
+    source = (ROOT / "web" / "apex.js").read_text(encoding="utf-8")
+    assert 'folderSearch:title==="02 / Model components"' in source
+    assert 'input.addEventListener("change",()=>{if(folderAware)' in source
+    assert 'const folder=folderOptionPath(input.value)' in source
+    assert 'search.addEventListener("input",()=>{node._apxLoraFilter=search.value' in source
+    assert 'fillLoraCombo(picker,values,"(none)",search.value' in source
+    assert 'fillFolderCombo(select,Array.isArray(values)?values:["(none)"],current,query,browsePath' in source
+
+
 def test_lora_strength_controls_support_slider_nudges_and_manual_values():
     source = (ROOT / "web" / "apex.js").read_text(encoding="utf-8")
     control = source[source.index("function strengthControl("):source.index("async function copyTriggerWord(")]
@@ -81,6 +91,8 @@ def test_lora_strength_controls_support_slider_nudges_and_manual_values():
     assert 'if(!isV2Graph(this.graph))' in source
     assert "node.title_mode=" not in source
     assert "for(let gx=" not in source and "for(let gy=" not in source
+    types = re.search(r'const TYPES = new Set\(\[(.*?)\]\);', source)
+    assert types is not None
     assert "ApexRecipe" not in types.group(1)
     assert "ApexGenerate" not in types.group(1)
 
@@ -226,4 +238,4 @@ def test_v2_workflow_declares_registry_identity_for_every_apex_node():
     for node in data["nodes"]:
         assert node["type"].startswith("Apex")
         assert node["properties"]["cnr_id"] == "apex-pipeline"
-        assert node["properties"]["ver"] == "2.0.6"
+        assert node["properties"]["ver"] == "2.0.7"

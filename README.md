@@ -5,7 +5,7 @@ Apex Generator V2 keeps the usual Krea 2 image workflow in four Apex nodes. The 
 ## The four nodes
 
 1. **Apex Model Matrix** loads the diffusion model, text encoder and VAE. It uses the installed LC123 optimizer when available.
-2. **Apex Generation Nexus** holds the prompt, canvas, seed, sampler and optional LoRAs. Use the separate search field to filter local LoRA files, then choose the result from the familiar dropdown. The search filters both the Add LoRA picker and the selectors on existing stack rows. The stack supports up to 64 entries, with independent model and CLIP strengths, reordering, duplicate and remove controls, and a clear per-LoRA ON/OFF switch. Changes are applied on the next queued run. Strength has a −5 to +5 slider, 0.05 step buttons and a number field for any finite value.
+2. **Apex Generation Nexus** holds the prompt, canvas, seed, sampler and optional LoRAs. Search local LoRA names, then choose a result from the dropdown. The stack supports up to 64 entries, with independent model and CLIP strengths, reordering, duplicate and remove controls, and a clear per-LoRA ON/OFF switch. Changes are applied on the next queued run. Strength has a −5 to +5 slider, 0.05 step buttons and a number field for any finite value.
 3. **Apex Archive** saves the image and embeds workflow, generation settings and resource hashes through LC123. It includes the run timer and one adjustable Last save preview.
 4. **Apex Image Preview** shows the generated image on its own. Drag its lower-right corner to resize it.
 
@@ -15,7 +15,7 @@ The workflow uses ComfyUI's normal model, image and widget data. The Apex surfac
 
 ## Missing-node pack warning
 
-The V2.0.6 starter writes the Comfy Registry package identity (`apex-pipeline`) onto every Apex node. This lets ComfyUI group missing Apex nodes under the correct pack instead of showing `Unknown pack`. If you already downloaded an older workflow copy, download the refreshed JSON below. If ComfyUI does not offer Registry installation yet, install Apex Pipeline from this repository using the steps above; Comfy Registry may still be reviewing the newest version.
+The V2.0.7 starter writes the Comfy Registry package identity (`apex-pipeline`) onto every Apex node. This lets ComfyUI group missing Apex nodes under the correct pack instead of showing `Unknown pack`. If you already downloaded an older workflow copy, download the refreshed JSON below. If ComfyUI does not offer Registry installation yet, install Apex Pipeline from this repository using the steps above; Comfy Registry may still be reviewing the newest version.
 
 ## Install
 
@@ -43,6 +43,8 @@ Use model files compatible with Comfy-Org's [Krea 2 release](https://huggingface
 | `qwen_image_vae.safetensors` | `models/vae/` |
 
 You can pick other compatible files in Apex Model Matrix. The supplied workflow starts with a blank prompt and no LoRAs, so it will not ask you to download someone else's LoRA collection.
+
+Model, text encoder and VAE dropdowns list files installed in ComfyUI, including files inside subfolders. Use the search field to filter names or paths across folders, or choose a folder in the dropdown to browse it. The LoRA search works the same way: it filters the Add LoRA and stack-row dropdowns across all local LoRA folders. These controls do not offer remote downloads or recommended files.
 
 The starter workflow does not save model filenames or LoRA selections. Choose files from your own ComfyUI model folders after opening it.
 
