@@ -60,7 +60,9 @@
           "widget_ue_connectable": {},
           "input_ue_unconnectable": {},
           "version": "7.8"
-        }
+        },
+        "cnr_id": "apex-pipeline",
+        "ver": "2.0.3"
       },
       "color": "#3f3a54",
       "bgcolor": "#2b2640"
@@ -207,7 +209,9 @@
           "widget_ue_connectable": {},
           "input_ue_unconnectable": {},
           "version": "7.8"
-        }
+        },
+        "cnr_id": "apex-pipeline",
+        "ver": "2.0.3"
       },
       "color": "#361318",
       "bgcolor": "#090a0d"
@@ -309,7 +313,9 @@
           "widget_ue_connectable": {},
           "input_ue_unconnectable": {},
           "version": "7.8"
-        }
+        },
+        "cnr_id": "apex-pipeline",
+        "ver": "2.0.3"
       },
       "color": "#361318",
       "bgcolor": "#090a0d"
@@ -343,7 +349,9 @@
           "widget_ue_connectable": {},
           "input_ue_unconnectable": {},
           "version": "7.8"
-        }
+        },
+        "cnr_id": "apex-pipeline",
+        "ver": "2.0.3"
       },
       "color": "#230b0d",
       "bgcolor": "#080809"
