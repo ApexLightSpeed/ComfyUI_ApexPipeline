@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.1 — V2 release correction
+
+- Reissues the current V2 package as a fresh Registry version so ComfyUI users can update to the intended frontend and starter workflow.
+- States explicitly that the starter saves no model filenames or LoRA selections; users choose files from their own model folders.
+- Keeps the LoRA model and CLIP controls at −5…+5, with ±0.05 buttons and direct numeric entry for any finite value.
+- Preserves the four-node layout, image preview, model loading, sampling, decode, and save behavior.
+
 ## 2.0.0 — Apex Generator V2
 
 - Ships the four-node Apex Model Matrix → Apex Generation Nexus → Apex Archive → Apex Image Preview workflow.
@@ -15,7 +22,7 @@
 - Suppresses ComfyUI's native image thumbnail on Apex Archive, leaving its integrated Last save image as the single small preview in that node.
 - Leaves model loading, sampling, decoding, metadata, and archive save behavior unchanged; the preview uses ComfyUI's built-in preview image writer.
 
-## 2.0.1 — Apex surface refinement (development history)
+## V2 development note — Apex surface refinement
 
 - Renames the readable node headers to Apex Model Matrix, Apex Generation Nexus, and Apex Archive while preserving the underlying node class IDs and graph sockets.
 - Replaces the abstract signal header with original, angled crimson skull artwork and a distressed condensed title; shifts the header and controls toward black with restrained deep-red accents.
@@ -26,7 +33,7 @@
 - Leaves sampler, conditioning, model load, VAE decode, and LC123 metadata/saver implementations unchanged.
 - Tunes remaining canvas accent strokes to the deeper crimson palette in Apex's latest art direction.
 
-## 2.0.0 — development candidate
+## V2 development candidate — three-node layout (superseded)
 
 - Replaces the multi-node Generator canvas with three Apex nodes: Model Engine, Generation Core, and Output / Provenance.
 - Replaces ComfyUI's standard title bar, node frame and widget stack with full-bleed ApexLightSpeed surfaces; the whole node body and outline use the near-black and red signal system.

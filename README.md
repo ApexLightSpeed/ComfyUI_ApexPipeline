@@ -40,6 +40,8 @@ Use model files compatible with Comfy-Org's [Krea 2 release](https://huggingface
 
 You can pick other compatible files in Apex Model Matrix. The supplied workflow starts with a blank prompt and no LoRAs, so it will not ask you to download someone else's LoRA collection.
 
+The starter workflow does not save model filenames or LoRA selections. Choose files from your own ComfyUI model folders after opening it.
+
 ## First run
 
 1. In **Apex Model Matrix**, choose your Krea 2 model, text encoder and VAE.
